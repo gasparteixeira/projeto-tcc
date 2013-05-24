@@ -25,7 +25,7 @@ public class PedidoMB  implements Serializable{
     private String message ;
     public static String debugs;
     public static StringBuilder sb = new StringBuilder();
-
+    public static RandomPedidoEventGenerator generator;
 
 
     
@@ -40,9 +40,14 @@ public class PedidoMB  implements Serializable{
         ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext(new String[] { "application-context.xml" });
         BeanFactory factory = (BeanFactory) appContext;
 
-        RandomPedidoEventGenerator generator = (RandomPedidoEventGenerator) factory.getBean("eventGenerator");
-        generator.startSendingTemperatureReadings(maxNumberEvents);
+        generator = (RandomPedidoEventGenerator) factory.getBean("eventGenerator");
+        generator.startSendingPedidoReadings(maxNumberEvents);
         
+        return null;
+    }
+    
+    public String stopEvent(){
+        generator.startSendingPedidoReadings(0L);
         return null;
     }
     

@@ -21,7 +21,7 @@ public class RandomPedidoEventGenerator {
     @Autowired
     private PedidoEventHandler pedidoEventHandler;
 
-    public void startSendingTemperatureReadings(final long noOfTemperatureEvents) {
+    public void startSendingPedidoReadings(final long noOfPedidoEvents) {
 
         ExecutorService xrayExecutor = Executors.newSingleThreadExecutor();
 
@@ -31,7 +31,7 @@ public class RandomPedidoEventGenerator {
                 LOG.debug(getStartingMessage());
                 
                 int count = 0;
-                while (count < noOfTemperatureEvents) {
+                while (count < noOfPedidoEvents) {
                     double max = 11000;
                     double min = 30;
                     double randon  = new Random().nextDouble();

@@ -30,7 +30,6 @@ public class PedidoEventHandler implements InitializingBean{
     private EPStatement monitorEventStatement;
     @ManagedProperty(value="#{pedidoMB}")
     private PedidoMB pedido;
-    
 
     @Autowired
     @Qualifier("criticalEventSubscriber")
@@ -52,14 +51,14 @@ public class PedidoEventHandler implements InitializingBean{
         config.addEventTypeAutoName("br.com.senac.event.event");
         epService = EPServiceProviderManager.getDefaultProvider(config);
 
-        createCriticalTemperatureCheckExpression();
-        createWarningTemperatureCheckExpression();
-        createTemperatureMonitorExpression();
+        createCriticalPedidoCheckExpression();
+        createWarningPedidoCheckExpression();
+        createPedidoMonitorExpression();
 
     }
 
     
-    private void createCriticalTemperatureCheckExpression() {
+    private void createCriticalPedidoCheckExpression() {
         
         LOG.debug("criando Pedido Crítico baseado na Expressão");
         criticalEventStatement = epService.getEPAdministrator().createEPL(criticalEventSubscriber.getStatement());
@@ -67,14 +66,14 @@ public class PedidoEventHandler implements InitializingBean{
     }
 
     
-    private void createWarningTemperatureCheckExpression() {
+    private void createWarningPedidoCheckExpression() {
 
         LOG.debug("criando Pedido Alerta baseado na Expressão");
         warningEventStatement = epService.getEPAdministrator().createEPL(warningEventSubscriber.getStatement());
         warningEventStatement.setSubscriber(warningEventSubscriber);
     }
 
-    private void createTemperatureMonitorExpression() {
+    private void createPedidoMonitorExpression() {
 
         LOG.debug("Monitorando pedidos por tempo de execução");
         monitorEventStatement = epService.getEPAdministrator().createEPL(monitorEventSubscriber.getStatement());

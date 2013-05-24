@@ -28,6 +28,7 @@
                                 <div class="box-content nopadding">
                                     <h:form styleClass="form-horizontal form-bordered" id="form">
                                         <h:commandButton action="#{pedidoMB.startEvent}" value="Iniciar Captura de Eventos" />
+                                        <h:commandButton action="#{pedidoMB.stopEvent}" value="Desligar Captura" rendered="false" />
                                         <p:poll interval="1" listener="#{pedidoMB.showMessage}" update="public" oncomplete="scrolling();" />  
 
                                         <h:panelGroup layout="block" id="messages">
