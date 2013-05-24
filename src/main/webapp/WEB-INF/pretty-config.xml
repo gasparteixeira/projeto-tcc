@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pretty-config xmlns="http://ocpsoft.org/prettyfaces/3.3.3" 
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+               xsi:schemaLocation="http://ocpsoft.org/prettyfaces/3.3.3
+               http://ocpsoft.org/xml/ns/prettyfaces/ocpsoft-pretty-faces-3.3.3.xsd">
+
+	<url-mapping id="home">
+		<pattern value="/" />
+		<view-id value="/faces/sistema/home.xhtml" />
+	</url-mapping>
+	<url-mapping id="inicial">
+		<pattern value="/inicial" />
+		<view-id value="/faces/sistema/home.xhtml" />
+	</url-mapping>
+	<url-mapping id="usuario">
+		<pattern value="/usuarioList" />
+		<view-id value="/faces/sistema/backend/usuarioList.xhtml" />
+	</url-mapping>
+	<url-mapping id="usuarioNew">
+		<pattern value="/usuarioNew" />
+		<view-id value="/faces/sistema/backend/usuarioNew.xhtml" />
+	</url-mapping>
+	<url-mapping id="usuarioEdit">
+		<pattern value="/usuarioEdit" />
+		<view-id value="/faces/sistema/backend/usuarioEdit.xhtml" />
+	</url-mapping>
+	<url-mapping id="usuarioDelete">
+		<pattern value="/usuarioDelete" />
+		<view-id value="/faces/sistema/backend/usuarioDelete.xhtml" />
+	</url-mapping>
+        
+        <url-mapping id="produto">
+		<pattern value="/produto" />
+		<view-id value="/faces/sistema/backend/produtoList.xhtml" />
+	</url-mapping>
+        
+
+</pretty-config>
