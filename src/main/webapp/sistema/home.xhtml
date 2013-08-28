@@ -9,9 +9,7 @@
             <div id="main">
                 <div class="container-fluid">
                     <div class="page-header">
-                        <div class="pull-left">
-                            <h1>Inicial</h1>
-                        </div>
+                        
                         <div class="pull-right">
 
                         </div>
@@ -21,13 +19,14 @@
                             <div class="box box-color box-bordered">
                                 <div class="box-title">
                                     <h3>
-                                        Homepage
+                                        <span class="iconTableHeadding"></span>
+                                        Dashboard
 
                                     </h3>
                                 </div>
                                 <div class="box-content nopadding">
                                     <h:form styleClass="form-horizontal form-bordered" id="form">
-                                        <h:commandButton action="#{pedidoMB.startEvent}" value="Iniciar Captura de Eventos" />
+                                        <h:commandButton action="#{pedidoMB.startEvent}" value="Processar Eventos" styleClass="btn pl_start btn-success" />
                                         <h:commandButton action="#{pedidoMB.stopEvent}" value="Desligar Captura" rendered="false" />
                                         <p:poll interval="1" listener="#{pedidoMB.showMessage}" update="public" oncomplete="scrolling();" />  
 

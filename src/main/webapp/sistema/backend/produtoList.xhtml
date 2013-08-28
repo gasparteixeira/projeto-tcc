@@ -27,8 +27,69 @@
                                     </h3>
                                 </div>
                                 <div class="box-content nopadding">
+                                    <h:messages globalOnly="true"  styleClass="alert" style="list-style: none" />
                                     <h:form styleClass="form-horizontal form-bordered">
-                                        
+                                        <h:dataTable styleClass="table table-nomargin dataTable table-bordered" 
+                                                     bodyrows="10,20,50"
+                                                     value="#{produtoController.listarProdutos}" 
+                                                     var="produto" >
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Nome" />
+                                                </f:facet>
+                                                <h:outputText value="#{produto.nome}" />
+                                            </h:column>
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Categoria" />
+                                                </f:facet>
+                                                <h:outputText value="#{produto.idcategoria.nome}" />
+                                            </h:column>
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Marca" />
+                                                </f:facet>
+                                                <h:outputText value="#{produto.idmarca.nome}" />
+                                            </h:column>
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Código" />
+                                                </f:facet>
+                                                <h:outputText value="#{produto.codigo}" />
+                                            </h:column>
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Preço" />
+                                                </f:facet>
+                                                <h:outputText value="#{produto.preco}" />
+                                            </h:column>
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Desconto" />
+                                                </f:facet>
+                                                <h:outputText value="#{produto.desconto}" />
+                                            </h:column>
+                                            
+                                            <h:column headerClass="center">
+                                                <f:facet name="header">
+                                                    <h:outputText value="Ações" />
+                                                </f:facet>
+                                                <h:commandLink styleClass="btn btn-small" action="#{usuarioController.editar()}">
+                                                    <f:param name="selectedUsers" value="#{user}" />
+                                                    <span class="iconEdit"></span>Editar
+                                                </h:commandLink>
+                                                <h:commandLink styleClass="btn btn-small" onclick="return confirm('Tem certeza que deseja excluir o registro?'); return false;" action="#{usuarioController.deletar()}">
+                                                    <f:param name="id" value="#{user.id}" />
+                                                    <span class="iconDelete"></span>Excluir
+                                                </h:commandLink>
+                                            </h:column>
+                                            <f:facet name="footer" class="left">
+                                                <h:commandLink action="pretty:produtoNew" styleClass="btn btn-small">
+                                                    <span class="iconNew"></span>Novo
+                                                </h:commandLink>
+                                            </f:facet>
+
+                                        </h:dataTable>
                                     </h:form>
 
                                 </div>

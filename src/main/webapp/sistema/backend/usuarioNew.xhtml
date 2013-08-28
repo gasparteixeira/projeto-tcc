@@ -28,6 +28,7 @@
                                     </h3>
                                 </div>
                                 <div class="box-content nopadding">
+                                    <h:messages globalOnly="true"  styleClass="alert" errorClass="alert-error" infoClass="alert-info" />
                                     <h:form id="frmUsuario" prependId="false" styleClass="form-horizontal form-bordered">
                                         <div class="control-group">
                                             <h:outputLabel styleClass="control-label" for="nome" value="Nome" />
@@ -57,10 +58,9 @@
                                                 <h:inputText id="email"                                         
                                                              required="true" 
                                                              requiredMessage="Por favor, digite seu E-mail." 
-                                                             validatorMessage="E-mail inválido."
                                                              styleClass="input-xlarge" 
+                                                             validator="#{usuarioController.validateEmailUnico}"
                                                              value="#{usuarioController.usuario.email}">
-                                                    <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                                                 </h:inputText>
                                                 <h:message  styleClass="error" for="email" />
                                             </div>
@@ -68,14 +68,13 @@
                                         <div class="control-group">
                                             <h:outputLabel styleClass="control-label" for="cpf" value="CPF" />
                                             <div class="controls">
-
                                                 <h:inputText id="cpf"                                         
                                                              required="true" 
                                                              requiredMessage="Por favor, digite seu CPF." 
                                                              maxlength="15"
                                                              styleClass="input-xlarge cpf" 
+                                                             validator="#{usuarioController.validateCPFUnico}"
                                                              value="#{usuarioController.usuario.cpf}">
-                                                    <f:validateRegex pattern="[0-9]{2,3}?\.[0-9]{3}?\.[0-9]{3}?\-[0-9]{2}?"/>
                                                 </h:inputText>
                                                 <h:message styleClass="error" for="cpf" />
                                             </div>

@@ -14,9 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 
 /**
@@ -27,15 +25,16 @@ import javax.persistence.Temporal;
 @Table(name = "usuario")
 @NamedQueries({
     @NamedQuery(name = "Usuarios.listaUsuarios", query = "SELECT u FROM Usuario u"),
+    @NamedQuery(name = "Usuarios.countPorEmail", query = "SELECT u FROM Usuario u WHERE u.email = :email"),
+    @NamedQuery(name = "Usuarios.countPorCpf", query = "SELECT u FROM Usuario u WHERE u.cpf = :cpf"),
+    @NamedQuery(name = "Usuarios.loginAcesso", query = "SELECT u FROM Usuario u WHERE u.senha = :senha AND  u.email = :email"),
     @NamedQuery(name = "Usuarios.countUsuariosTotal", query = "SELECT COUNT(u) FROM Usuario u")})
-public class Usuario extends BaseEntity implements Serializable {
+public class Usuario implements Serializable {
 
-    public final static String ALL = "Usuarios.listaUsuarios";
-    public final static String TOTAL = "Usuarios.countUsuariosTotal";
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(nullable=true,name="IDUSUARIO", columnDefinition = "SERIAL")
+    @Column(nullable = true, name = "ID", columnDefinition = "SERIAL")
     private Integer id;
     @Column(nullable = false, length = 50)
     private String nome;
@@ -111,9 +110,29 @@ public class Usuario extends BaseEntity implements Serializable {
     }
 
     @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + (this.id != null ? this.id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Usuario other = (Usuario) obj;
+        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public String toString() {
         return "Usuario{" + "id=" + id + ", nome=" + nome + ", sobrenome=" + sobrenome + ", cpf=" + cpf + ", email=" + email + ", senha=" + senha + ", datacriacao=" + datacriacao + '}';
     }
-    
-    
 }

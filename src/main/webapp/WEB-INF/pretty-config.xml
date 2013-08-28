@@ -4,12 +4,19 @@
                xsi:schemaLocation="http://ocpsoft.org/prettyfaces/3.3.3
                http://ocpsoft.org/xml/ns/prettyfaces/ocpsoft-pretty-faces-3.3.3.xsd">
 
-	<url-mapping id="home">
+        
+        <url-mapping id="home">
 		<pattern value="/" />
-		<view-id value="/faces/sistema/home.xhtml" />
+		<view-id value="/faces/pages/index.xhtml" />
 	</url-mapping>
-	<url-mapping id="inicial">
-		<pattern value="/inicial" />
+        
+        <url-mapping id="login">
+		<pattern value="/login" />
+		<view-id value="/faces/pages/login.xhtml" />
+	</url-mapping>
+        
+	<url-mapping id="sistema">
+		<pattern value="/homepage" />
 		<view-id value="/faces/sistema/home.xhtml" />
 	</url-mapping>
 	<url-mapping id="usuario">
@@ -17,22 +24,65 @@
 		<view-id value="/faces/sistema/backend/usuarioList.xhtml" />
 	</url-mapping>
 	<url-mapping id="usuarioNew">
-		<pattern value="/usuarioNew" />
+		<pattern value="/usuario-novo" />
 		<view-id value="/faces/sistema/backend/usuarioNew.xhtml" />
 	</url-mapping>
 	<url-mapping id="usuarioEdit">
-		<pattern value="/usuarioEdit" />
+		<pattern value="/usuario-editar" />
 		<view-id value="/faces/sistema/backend/usuarioEdit.xhtml" />
 	</url-mapping>
 	<url-mapping id="usuarioDelete">
-		<pattern value="/usuarioDelete" />
+		<pattern value="/usuario-excluir" />
 		<view-id value="/faces/sistema/backend/usuarioDelete.xhtml" />
 	</url-mapping>
+        <!-- categorias -->
+        <url-mapping id="categoria">
+		<pattern value="/categorias" />
+		<view-id value="/faces/sistema/backend/categoriaList.xhtml" />
+	</url-mapping>
         
+        <url-mapping id="categoriaNew">
+		<pattern value="/categorias-adicionar" />
+		<view-id value="/faces/sistema/backend/categoriaNew.xhtml" />
+	</url-mapping>
+        
+        <url-mapping id="categoriaEdit">
+		<pattern value="/categorias-editar" />
+		<view-id value="/faces/sistema/backend/categoriaEdit.xhtml" />
+	</url-mapping>
+        <!-- fim das categorias -->
+        <!-- marcas -->
+        <url-mapping id="marca">
+		<pattern value="/marcas" />
+		<view-id value="/faces/sistema/backend/marcaList.xhtml" />
+	</url-mapping>
+        
+        <url-mapping id="marcaNew">
+		<pattern value="/marcas-adicionar" />
+		<view-id value="/faces/sistema/backend/marcaNew.xhtml" />
+	</url-mapping>
+        
+        <url-mapping id="marcaEdit">
+		<pattern value="/marcas-editar" />
+		<view-id value="/faces/sistema/backend/marcaEdit.xhtml" />
+	</url-mapping>
+        <!-- fim das marcas -->
+        
+        <!-- produtos -->
         <url-mapping id="produto">
 		<pattern value="/produto" />
 		<view-id value="/faces/sistema/backend/produtoList.xhtml" />
 	</url-mapping>
         
+        <url-mapping id="produtoNew">
+		<pattern value="/produto-adicionar" />
+		<view-id value="/faces/sistema/backend/produtoNew.xhtml" />
+	</url-mapping>
+        
+        <url-mapping id="produtoEdit">
+		<pattern value="/produto-editar" />
+		<view-id value="/faces/sistema/backend/produtoEdit.xhtml" />
+	</url-mapping>
+        <!-- fim dos produtos -->
 
 </pretty-config>

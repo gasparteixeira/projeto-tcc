@@ -19,7 +19,7 @@ public class BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 
     public Integer getId() {
@@ -27,6 +27,7 @@ public class BaseEntity implements Serializable {
     }
 
     public void setId(Integer id) {
+        System.out.println("id generated " + id);
         this.id = id;
     }
 

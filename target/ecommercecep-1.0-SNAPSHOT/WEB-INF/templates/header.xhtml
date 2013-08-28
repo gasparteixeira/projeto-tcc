@@ -19,16 +19,38 @@
                     <h:link outcome="pretty:usuario">
                         <span>Usuário</span>
                     </h:link>
-
                 </li>
                 <li>
-                    <h:link outcome="pretty:produto">
+                    <a href="#" data-toggle="dropdown" class='dropdown-toggle'>
+                        <i class="icon-th-large"></i>
                         <span>Produtos</span>
-                    </h:link>
-
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <h:link outcome="pretty:produto">
+                                <span>Produto</span>
+                            </h:link>
+                        </li>
+                        <li>
+                            <h:link outcome="pretty:categoria">
+                                <span>Categoria</span>
+                            </h:link>
+                        </li>
+                        <li>
+                            <h:link outcome="pretty:marca">
+                                <span>Marca</span>
+                            </h:link>
+                        </li>
+                    </ul>
                 </li>
-                
+
             </ul>
+            <div class="login-right">
+                <pretty:link styleClass="loginaccess" mappingId="login">
+                    Login
+                </pretty:link>
+            </div>
         </div>
     </div>
 </ui:component>

@@ -4,7 +4,10 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <jta-data-source>jdbc/ecommerce_cep</jta-data-source>
     <class>br.combr.com.senac.entity.Roles</class>
-    <class>brbr.com.senac.entity.Usuario</class>
+    <class>br.com.senac.entity.Usuario</class>
+    <class>br.com.senac.entity.Categoria</class>
+    <class>br.com.senac.entity.Produto</class>
+    <class>br.com.senac.entity.Marca</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="eclipselink.ddl-generation" value="none"/>
