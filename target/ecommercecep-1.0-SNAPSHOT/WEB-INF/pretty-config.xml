@@ -21,67 +21,86 @@
 	</url-mapping>
 	<url-mapping id="usuario">
 		<pattern value="/usuarioList" />
-		<view-id value="/faces/sistema/backend/usuarioList.xhtml" />
+		<view-id value="/faces/sistema/backend/usuario/List.xhtml" />
 	</url-mapping>
 	<url-mapping id="usuarioNew">
 		<pattern value="/usuario-novo" />
-		<view-id value="/faces/sistema/backend/usuarioNew.xhtml" />
+		<view-id value="/faces/sistema/backend/usuario/New.xhtml" />
 	</url-mapping>
 	<url-mapping id="usuarioEdit">
 		<pattern value="/usuario-editar" />
-		<view-id value="/faces/sistema/backend/usuarioEdit.xhtml" />
+		<view-id value="/faces/sistema/backend/usuario/Edit.xhtml" />
 	</url-mapping>
-	<url-mapping id="usuarioDelete">
-		<pattern value="/usuario-excluir" />
-		<view-id value="/faces/sistema/backend/usuarioDelete.xhtml" />
-	</url-mapping>
+        
         <!-- categorias -->
         <url-mapping id="categoria">
 		<pattern value="/categorias" />
-		<view-id value="/faces/sistema/backend/categoriaList.xhtml" />
+		<view-id value="/faces/sistema/backend/categoria/List.xhtml" />
 	</url-mapping>
         
         <url-mapping id="categoriaNew">
 		<pattern value="/categorias-adicionar" />
-		<view-id value="/faces/sistema/backend/categoriaNew.xhtml" />
+		<view-id value="/faces/sistema/backend/categoria/Create.xhtml" />
 	</url-mapping>
         
         <url-mapping id="categoriaEdit">
 		<pattern value="/categorias-editar" />
-		<view-id value="/faces/sistema/backend/categoriaEdit.xhtml" />
+		<view-id value="/faces/sistema/backend/categoria/Edit.xhtml" />
 	</url-mapping>
         <!-- fim das categorias -->
+        
+        <!-- galeria -->
+        <url-mapping id="galeria">
+		<pattern value="/galeria" />
+		<view-id value="/faces/sistema/backend/galeria/List.xhtml" />
+	</url-mapping>
+        
+        <url-mapping id="galeriaNew">
+		<pattern value="/foto-adicionar" />
+		<view-id value="/faces/sistema/backend/galeria/Create.xhtml" />
+	</url-mapping>
+        
+        <url-mapping id="galeriaEdit">
+		<pattern value="/foto-editar" />
+		<view-id value="/faces/sistema/backend/galeria/Edit.xhtml" />
+	</url-mapping>
+        <!-- fim das galeria -->
+        
         <!-- marcas -->
         <url-mapping id="marca">
 		<pattern value="/marcas" />
-		<view-id value="/faces/sistema/backend/marcaList.xhtml" />
+		<view-id value="/faces/sistema/backend/marca/List.xhtml" />
 	</url-mapping>
         
         <url-mapping id="marcaNew">
 		<pattern value="/marcas-adicionar" />
-		<view-id value="/faces/sistema/backend/marcaNew.xhtml" />
+		<view-id value="/faces/sistema/backend/marca/Create.xhtml" />
 	</url-mapping>
         
         <url-mapping id="marcaEdit">
 		<pattern value="/marcas-editar" />
-		<view-id value="/faces/sistema/backend/marcaEdit.xhtml" />
+		<view-id value="/faces/sistema/backend/marca/Edit.xhtml" />
 	</url-mapping>
         <!-- fim das marcas -->
         
         <!-- produtos -->
         <url-mapping id="produto">
 		<pattern value="/produto" />
-		<view-id value="/faces/sistema/backend/produtoList.xhtml" />
+		<view-id value="/faces/sistema/backend/produto/List.xhtml" />
 	</url-mapping>
         
         <url-mapping id="produtoNew">
 		<pattern value="/produto-adicionar" />
-		<view-id value="/faces/sistema/backend/produtoNew.xhtml" />
+		<view-id value="/faces/sistema/backend/produto/Create.xhtml" />
 	</url-mapping>
         
         <url-mapping id="produtoEdit">
 		<pattern value="/produto-editar" />
-		<view-id value="/faces/sistema/backend/produtoEdit.xhtml" />
+		<view-id value="/faces/sistema/backend/produto/Edit.xhtml" />
+	</url-mapping>
+        <url-mapping id="produtoNew">
+		<pattern value="/produto-visualizar" />
+		<view-id value="/faces/sistema/backend/produto/View.xhtml" />
 	</url-mapping>
         <!-- fim dos produtos -->
 

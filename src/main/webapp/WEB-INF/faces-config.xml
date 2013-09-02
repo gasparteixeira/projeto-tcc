@@ -16,6 +16,10 @@
     <factory>
         <render-kit-factory>org.omnifaces.renderkit.Html5RenderKitFactory</render-kit-factory>
     </factory>
-
-
+    <application>
+        <resource-bundle>
+            <base-name>/resources/Bundle</base-name>
+            <var>bundle</var>
+        </resource-bundle>
+    </application>
 </faces-config>

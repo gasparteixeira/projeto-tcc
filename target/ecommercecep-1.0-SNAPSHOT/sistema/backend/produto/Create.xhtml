@@ -1,0 +1,106 @@
+
+
+<ui:composition template="/WEB-INF/templates/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="title">
+        <h:outputText value="#{bundle.CreateProdutoTitle}"></h:outputText>
+    </ui:define>
+    <ui:define name="content">
+        <article>
+            <div id="main">
+                <div class="container-fluid">
+                    <div class="page-header">
+                        <div class="pull-left">
+                            <h1>Produtos</h1>
+                        </div>
+                        <div class="pull-right">
+
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <div class="box box-color box-bordered">
+                                <div class="box-title">
+                                    <h3>
+                                        <span class="iconTableHeadding"></span>
+                                        <h:outputText value="#{bundle.CreateProdutoTitle}"></h:outputText>
+                                    </h3>
+                                </div>
+                                <div class="box-content nopadding">
+                                    <h:panelGroup id="messagePanel" layout="block">
+                                        <h:messages styleClass="alert"  />
+                                    </h:panelGroup>
+                                    <h:form styleClass="form-horizontal form-bordered">
+                                        <div class="control-group">
+                                            <h:outputLabel value="#{bundle.CreateProdutoLabel_nome}" styleClass="control-label" for="nome" />
+                                            <div class="controls">
+                                                <h:inputText id="nome" styleClass="input-xlarge"  value="#{produtoController.selected.nome}" title="#{bundle.CreateProdutoTitle_nome}" required="true" requiredMessage="#{bundle.CreateProdutoRequiredMessage_nome}"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="control-group">
+                                            <h:outputLabel value="#{bundle.CreateProdutoLabel_preco}" styleClass="control-label" for="preco" />
+                                            <div class="controls">
+                                                <h:inputText id="preco" styleClass="input-xlarge"  value="#{produtoController.selected.preco}" title="#{bundle.CreateProdutoTitle_preco}" required="true" requiredMessage="#{bundle.CreateProdutoRequiredMessage_preco}"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="control-group">
+                                            <h:outputLabel value="#{bundle.CreateProdutoLabel_desconto}" styleClass="control-label" for="desconto" />
+                                            <div class="controls">
+                                                <h:inputText id="desconto" styleClass="input-xlarge"  value="#{produtoController.selected.desconto}" title="#{bundle.CreateProdutoTitle_desconto}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="control-group">
+                                            <h:outputLabel value="#{bundle.CreateProdutoLabel_codigo}" styleClass="control-label" for="codigo" />
+                                            <div class="controls">
+                                                <h:inputText id="codigo" styleClass="input-xlarge"  value="#{produtoController.selected.codigo}" title="#{bundle.CreateProdutoTitle_codigo}" required="true" requiredMessage="#{bundle.CreateProdutoRequiredMessage_codigo}"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="control-group">
+                                            <h:outputLabel value="#{bundle.CreateProdutoLabel_informacoes}" styleClass="control-label" for="informacoes" />
+                                            <div class="controls">
+                                                <h:inputTextarea id="informacoes" styleClass="input-xlarge"  value="#{produtoController.selected.informacoes}" title="#{bundle.CreateProdutoTitle_informacoes}" required="true" requiredMessage="#{bundle.CreateProdutoRequiredMessage_informacoes}"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="control-group">
+                                            <h:outputLabel value="#{bundle.CreateProdutoLabel_idcategoria}" styleClass="control-label" for="idcategoria" />
+                                            <div class="controls">
+                                                <h:selectOneMenu id="idcategoria" styleClass="chosen-select chzn-done" value="#{produtoController.selected.idcategoria}" title="#{bundle.CreateProdutoTitle_idcategoria}" required="true" requiredMessage="#{bundle.CreateProdutoRequiredMessage_idcategoria}">
+                                                    <f:selectItems value="#{categoriaController.itemsAvailableSelectOne}"/>
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+
+                                        <div class="control-group">
+                                            <h:outputLabel value="#{bundle.CreateProdutoLabel_idmarca}" styleClass="control-label" for="idmarca" />
+                                            <div class="controls">
+                                                <h:selectOneMenu id="idmarca" styleClass="chosen-select chzn-done" value="#{produtoController.selected.idmarca}" title="#{bundle.CreateProdutoTitle_idmarca}" required="true" requiredMessage="#{bundle.CreateProdutoRequiredMessage_idmarca}">
+                                                    <f:selectItems value="#{marcaController.itemsAvailableSelectOne}"/>
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-actions">
+                                            <h:commandLink styleClass="btn btn-primary" action="#{produtoController.create}" value="#{bundle.CreateUsuarioSaveLink}" />
+                                            <h:commandLink styleClass="btn btn-primary" action="#{produtoController.prepareList}" value="#{bundle.CreateProdutoShowAllLink}" immediate="true"/>
+                                            <h:link styleClass="btn btn-primary" outcome="/index" value="#{bundle.CreateProdutoIndexLink}"/>
+                                        </div>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+        
+    </ui:define>
+</ui:composition>
+

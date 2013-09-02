@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewTipoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewTipoLabel_id}"/>
+                    <h:outputText value="#{tipoController.selected.id}" title="#{bundle.ViewTipoTitle_id}"/>
+                    <h:outputText value="#{bundle.ViewTipoLabel_nome}"/>
+                    <h:outputText value="#{tipoController.selected.nome}" title="#{bundle.ViewTipoTitle_nome}"/>
+                    <h:outputText value="#{bundle.ViewTipoLabel_sigla}"/>
+                    <h:outputText value="#{tipoController.selected.sigla}" title="#{bundle.ViewTipoTitle_sigla}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{tipoController.destroyAndView}" value="#{bundle.ViewTipoDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewTipoEditLink}"/>
+                <br />
+                <h:commandLink action="#{tipoController.prepareCreate}" value="#{bundle.ViewTipoCreateLink}" />
+                <br />
+                <h:commandLink action="#{tipoController.prepareList}" value="#{bundle.ViewTipoShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewTipoIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

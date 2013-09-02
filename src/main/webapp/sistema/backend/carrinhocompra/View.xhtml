@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewCarrinhocompraTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewCarrinhocompraLabel_id}"/>
+                    <h:outputText value="#{carrinhocompraController.selected.id}" title="#{bundle.ViewCarrinhocompraTitle_id}"/>
+                    <h:outputText value="#{bundle.ViewCarrinhocompraLabel_idcompra}"/>
+                    <h:outputText value="#{carrinhocompraController.selected.idcompra}" title="#{bundle.ViewCarrinhocompraTitle_idcompra}"/>
+                    <h:outputText value="#{bundle.ViewCarrinhocompraLabel_idcarrinho}"/>
+                    <h:outputText value="#{carrinhocompraController.selected.idcarrinho}" title="#{bundle.ViewCarrinhocompraTitle_idcarrinho}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{carrinhocompraController.destroyAndView}" value="#{bundle.ViewCarrinhocompraDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewCarrinhocompraEditLink}"/>
+                <br />
+                <h:commandLink action="#{carrinhocompraController.prepareCreate}" value="#{bundle.ViewCarrinhocompraCreateLink}" />
+                <br />
+                <h:commandLink action="#{carrinhocompraController.prepareList}" value="#{bundle.ViewCarrinhocompraShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewCarrinhocompraIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

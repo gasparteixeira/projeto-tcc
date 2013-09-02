@@ -1,0 +1,85 @@
+
+
+<ui:composition template="/WEB-INF/templates/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="title">
+        <h:outputText value="#{bundle.ListCategoriaTitle}"></h:outputText>
+    </ui:define>
+    <ui:define name="content">
+        <article>
+            <div id="main">
+                <div class="container-fluid">
+                    <div class="page-header">
+                        <div class="pull-left">
+                            <h1>Lista de Categorias</h1>
+                        </div>
+                        <div class="pull-right">
+
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <div class="box box-color box-bordered">
+                                <div class="box-title">
+                                    <h3>
+                                        <span class="iconTableHeadding"></span>
+                                        Categorias
+                                    </h3>
+                                </div>
+                                <div class="box-content nopadding">
+                                    <h:messages globalOnly="true"  styleClass="alert" style="list-style: none" />
+                                    <h:form styleClass="form-horizontal form-bordered">
+                                        <h:outputText escape="false" value="#{bundle.ListCategoriaEmpty}" rendered="#{categoriaController.items.rowCount == 0}"/>
+                                        <h:panelGroup rendered="#{categoriaController.items.rowCount > 0}" styleClass="table">
+                                            <h:outputText value="#{categoriaController.pagination.pageFirstItem + 1}..#{categoriaController.pagination.pageLastItem + 1}/#{categoriaController.pagination.itemsCount}"/>
+                                            <h:commandLink action="#{categoriaController.previous}" value="#{bundle.Previous} #{categoriaController.pagination.pageSize}" rendered="#{categoriaController.pagination.hasPreviousPage}"/>
+                                            <h:commandLink action="#{categoriaController.next}" value="#{bundle.Next} #{categoriaController.pagination.pageSize}" rendered="#{categoriaController.pagination.hasNextPage}"/>
+                                            <h:dataTable styleClass="table table-nomargin dataTable  table-bordered" 
+                                                         bodyrows="10,20,50"
+                                                         value="#{categoriaController.items}" 
+                                                         var="item" >
+                                                <h:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{bundle.ListCategoriaTitle_nome}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{item.nome}" />
+                                                </h:column>
+                                                <h:column headerClass="center acoes">
+                                                    <f:facet name="header">
+                                                        <h:outputText value="Ações" />
+                                                    </f:facet>
+                                                    <h:commandLink styleClass="btn btn-small" action="#{categoriaController.prepareView}" >
+                                                        <span class="iconView"></span><h:outputText value="#{bundle.ListCategoriaViewLink}" />
+                                                    </h:commandLink>
+                                                    <h:commandLink styleClass="btn btn-small" action="#{categoriaController.prepareEdit}"  >
+                                                        <span class="iconEdit"></span><h:outputText value="#{bundle.ListCategoriaEditLink}" />
+                                                    </h:commandLink>
+                                                    <h:commandLink styleClass="btn btn-small" onclick="return confirm('Tem certeza que deseja excluir o registro?');
+                                                            return false;" action="#{categoriaController.destroy}" >
+                                                        <span class="iconDelete"></span><h:outputText value="#{bundle.ListCategoriaDestroyLink}" />
+                                                    </h:commandLink>
+                                                </h:column>
+                                                <f:facet name="footer" class="left">
+                                                    <h:commandLink action="#{categoriaController.prepareCreate}" styleClass="btn btn-small" >
+                                                        <span class="iconNew"></span><h:outputText value="#{bundle.ListCategoriaCreateLink}" />
+                                                    </h:commandLink>
+                                                </f:facet>
+                                            </h:dataTable>
+                                        </h:panelGroup>
+                                        <h:commandLink action="#{categoriaController.prepareCreate}" styleClass="btn btn-small" rendered="#{categoriaController.items.rowCount == 0}" >
+                                            <span class="iconNew"></span><h:outputText value="#{bundle.ListCategoriaCreateLink}" />
+                                        </h:commandLink>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </ui:define>
+</ui:composition>
+

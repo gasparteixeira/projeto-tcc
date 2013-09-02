@@ -1,0 +1,64 @@
+<ui:composition template="/WEB-INF/templates/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="title">
+        <h:outputText value="#{bundle.ViewUsuarioTitle}"></h:outputText>
+    </ui:define>
+    <ui:define name="content">
+        <article>
+            <div id="main">
+                <div class="container-fluid">
+                    <div class="page-header">
+                        <div class="pull-left">
+                            <h1>Registro de Usuário</h1>
+                        </div>
+                        <div class="pull-right">
+
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <div class="box box-color box-bordered">
+                                <div class="box-title">
+                                    <h3>
+                                        <span class="iconTableHeadding"></span>
+                                        Usuário "<h:outputText value="#{usuarioController.selected.nome}"/>"
+                                    </h3>
+                                </div>
+                                <div class="box-content nopadding">
+                                    <h:messages globalOnly="true"  styleClass="alert" style="list-style: none" />
+                                    <h:form styleClass="form-horizontal form-bordered">
+                                        <h:panelGrid columns="2">
+                                            <h:outputText value="#{bundle.ViewUsuarioLabel_nome}"/>
+                                            <h:outputText value="#{usuarioController.selected.nome}" title="#{bundle.ViewUsuarioTitle_nome}"/>
+                                            <h:outputText value="#{bundle.ViewUsuarioLabel_sobrenome}"/>
+                                            <h:outputText value="#{usuarioController.selected.sobrenome}" title="#{bundle.ViewUsuarioTitle_sobrenome}"/>
+                                            <h:outputText value="#{bundle.ViewUsuarioLabel_cpf}"/>
+                                            <h:outputText value="#{usuarioController.selected.cpf}" title="#{bundle.ViewUsuarioTitle_cpf}"/>
+                                            <h:outputText value="#{bundle.ViewUsuarioLabel_email}"/>
+                                            <h:outputText value="#{usuarioController.selected.email}" title="#{bundle.ViewUsuarioTitle_email}"/>
+                                            <h:outputText value="#{bundle.ViewUsuarioLabel_senha}"/>
+                                            <h:outputText value="#{usuarioController.selected.senha}" title="#{bundle.ViewUsuarioTitle_senha}"/>
+                                            <h:outputText value="#{bundle.ViewUsuarioLabel_datacriacao}"/>
+                                            <h:outputText value="#{usuarioController.selected.datacriacao}" title="#{bundle.ViewUsuarioTitle_datacriacao}">
+                                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                                            </h:outputText>
+                                        </h:panelGrid>
+                                        <br />
+                                        <h:commandLink styleClass="btn btn-small btn-danger" onclick="return confirm('Tem certeza que deseja excluir o registro?');" action="#{usuarioController.destroyAndView}" value="#{bundle.ViewUsuarioDestroyLink}"/>
+                                        <h:link outcome="Edit" styleClass="btn btn-small btn-info" value="#{bundle.ViewUsuarioEditLink}"/>
+                                        <h:commandLink styleClass="btn btn-small btn-success" action="#{usuarioController.prepareCreate}" value="#{bundle.ViewUsuarioCreateLink}" />
+                                        <h:commandLink styleClass="btn btn-small" action="#{usuarioController.prepareList}" value="#{bundle.ViewUsuarioShowAllLink}"/>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </ui:define>
+</ui:composition>
+

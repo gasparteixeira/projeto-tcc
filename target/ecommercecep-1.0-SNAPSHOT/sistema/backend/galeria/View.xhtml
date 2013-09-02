@@ -1,0 +1,61 @@
+
+
+    <ui:composition template="/WEB-INF/templates/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewGaleriaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="content">
+            <article>
+                <div id="main">
+                <div class="container-fluid">
+                    <div class="page-header">
+                        <div class="pull-left">
+                            <h1>Registro de Galeria</h1>
+                        </div>
+                        <div class="pull-right">
+
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <div class="box box-color box-bordered">
+                                <div class="box-title">
+                                    <h3>
+                                        <span class="iconTableHeadding"></span>
+                                        Imagem "<h:outputText value="#{galeriaController.selected.imagem}"/>"
+                                    </h3>
+                                </div>
+                                <div class="box-content nopadding">
+                                    <h:messages globalOnly="true"  styleClass="alert" style="list-style: none" />
+                                    <h:form styleClass="form-horizontal form-bordered">
+                                        <h:panelGrid columns="2">
+                                            <h:outputText styleClass="view-table"  value="#{bundle.ViewGaleriaLabel_imagem}"/>
+                                            <h:graphicImage library="images" width="100" height="auto" name="produtos/#{galeriaController.selected.imagem}" />
+                                            
+                                            <h:outputText styleClass="view-table"  value="#{bundle.ViewGaleriaLabel_destaque}"/>
+                                            <h:outputText value="#{galeriaController.selected.destaque}" title="#{bundle.ViewGaleriaTitle_destaque}"/>
+                                            
+                                            
+                                            <h:outputText styleClass="view-table"  value="#{bundle.ViewGaleriaLabel_idproduto}"/>
+                                            <h:outputText value="#{galeriaController.selected.idproduto.nome}" title="#{bundle.ViewGaleriaTitle_idproduto}"/>
+                                        </h:panelGrid>
+                                        <br />
+                                        <h:commandLink styleClass="btn btn-small btn-danger" onclick="return confirm('Tem certeza que deseja excluir o registro?');" action="#{galeriaController.destroyAndView}" value="#{bundle.ViewGaleriaDestroyLink}"/>
+                                        <h:link outcome="Edit" styleClass="btn btn-small btn-info" value="#{bundle.ViewGaleriaEditLink}"/>
+                                        <h:commandLink styleClass="btn btn-small btn-success" action="#{galeriaController.prepareCreate}" value="#{bundle.ViewGaleriaCreateLink}" />
+                                        <h:commandLink styleClass="btn btn-small" action="#{galeriaController.prepareList}" value="#{bundle.ViewGaleriaShowAllLink}"/>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </article>
+        </ui:define>
+    </ui:composition>
+

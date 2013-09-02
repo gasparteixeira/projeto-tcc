@@ -1213,3 +1213,15 @@ footer span { padding-right: 60px }
 .login-right {display: block; float: right; position: absolute; width: 100px; right: 10px }
 .loginaccess { font-size:11px; color: white; display: inline-block; padding: 3px 5px; }
 .loginaccess:hover { background: #1E74C5; text-decoration: none; color: white}
+.acoes { width:  250px !important}
+.view-table { padding: 5px; width: 200px; background: #f0f0f0; display: block; border-bottom: 1px solid white}
+.radios-rows label { display: inline-block; padding: 1px 10px 0 5px}
+#produtos ul li {list-style: none; width: 222px; float: left; padding: 5px; margin: 5px; border: 1px solid #f0f0f0}
+#produtos .foto { width: 200px; height: 160px}
+#produtos .foto img {  width: 200px; height: 160px }
+#produtos .info { display: block; overflow: hidden}
+#produtos .nome { display: block; white-space: nowrap; background: #f0f0f0}
+#produtos .categoria { display: block; white-space: nowrap}
+#produtos .marca { display: block; white-space: nowrap}
+#produtos .carrinho { display: bloc; text-align: center}
+#produtos .de { font-weight: bold}

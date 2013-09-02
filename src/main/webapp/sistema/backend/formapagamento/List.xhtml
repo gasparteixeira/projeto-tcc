@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListFormapagamentoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListFormapagamentoEmpty}" rendered="#{formapagamentoController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{formapagamentoController.items.rowCount > 0}">
+                    <h:outputText value="#{formapagamentoController.pagination.pageFirstItem + 1}..#{formapagamentoController.pagination.pageLastItem + 1}/#{formapagamentoController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{formapagamentoController.previous}" value="#{bundle.Previous} #{formapagamentoController.pagination.pageSize}" rendered="#{formapagamentoController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{formapagamentoController.next}" value="#{bundle.Next} #{formapagamentoController.pagination.pageSize}" rendered="#{formapagamentoController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{formapagamentoController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListFormapagamentoTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListFormapagamentoTitle_nome}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nome}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListFormapagamentoTitle_parcela}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.parcela}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{formapagamentoController.prepareView}" value="#{bundle.ListFormapagamentoViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{formapagamentoController.prepareEdit}" value="#{bundle.ListFormapagamentoEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{formapagamentoController.destroy}" value="#{bundle.ListFormapagamentoDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{formapagamentoController.prepareCreate}" value="#{bundle.ListFormapagamentoCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListFormapagamentoIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

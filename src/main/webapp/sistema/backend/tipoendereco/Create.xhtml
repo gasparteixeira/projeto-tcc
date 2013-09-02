@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateTipoenderecoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateTipoenderecoLabel_id}" for="id" />
+                    <h:inputText id="id" value="#{tipoenderecoController.selected.id}" title="#{bundle.CreateTipoenderecoTitle_id}" required="true" requiredMessage="#{bundle.CreateTipoenderecoRequiredMessage_id}"/>
+                    <h:outputLabel value="#{bundle.CreateTipoenderecoLabel_nome}" for="nome" />
+                    <h:inputText id="nome" value="#{tipoenderecoController.selected.nome}" title="#{bundle.CreateTipoenderecoTitle_nome}" required="true" requiredMessage="#{bundle.CreateTipoenderecoRequiredMessage_nome}"/>
+                    <h:outputLabel value="#{bundle.CreateTipoenderecoLabel_sigla}" for="sigla" />
+                    <h:inputText id="sigla" value="#{tipoenderecoController.selected.sigla}" title="#{bundle.CreateTipoenderecoTitle_sigla}" required="true" requiredMessage="#{bundle.CreateTipoenderecoRequiredMessage_sigla}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{tipoenderecoController.create}" value="#{bundle.CreateTipoenderecoSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{tipoenderecoController.prepareList}" value="#{bundle.CreateTipoenderecoShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateTipoenderecoIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
