@@ -1210,18 +1210,30 @@ footer span { padding-right: 60px }
 .alerta{color: red}
 .normal{color: gray}
 .evento{color: gainsboro}
-.login-right {display: block; float: right; position: absolute; width: 100px; right: 10px }
-.loginaccess { font-size:11px; color: white; display: inline-block; padding: 3px 5px; }
+.login-right {display: block; float: right; position: absolute; width: 300px; right: 10px; text-align: right }
+.loginaccess { font-size:12px; color: white; display: inline-block; padding: 10px 15px; }
 .loginaccess:hover { background: #1E74C5; text-decoration: none; color: white}
 .acoes { width:  250px !important}
 .view-table { padding: 5px; width: 200px; background: #f0f0f0; display: block; border-bottom: 1px solid white}
 .radios-rows label { display: inline-block; padding: 1px 10px 0 5px}
-#produtos ul li {list-style: none; width: 222px; float: left; padding: 5px; margin: 5px; border: 1px solid #f0f0f0}
+#produtos ul { margin: 0 0 10px -5px;}
+#produtos ul li {list-style: none; width: 209px; float: left; padding: 5px; margin: 5px; border: 1px solid #f0f0f0}
 #produtos .foto { width: 200px; height: 160px}
 #produtos .foto img {  width: 200px; height: 160px }
 #produtos .info { display: block; overflow: hidden}
-#produtos .nome { display: block; white-space: nowrap; background: #f0f0f0}
+#produtos .nome { display: block; background: #f0f0f0; overflow: hidden ; text-overflow: ellipsis; white-space: nowrap }
 #produtos .categoria { display: block; white-space: nowrap}
 #produtos .marca { display: block; white-space: nowrap}
 #produtos .carrinho { display: bloc; text-align: center}
 #produtos .de { font-weight: bold}
+.fotogrande {  margin-right: 20px}
+.codigoproduto, .categoriaproduto, .nomemarca, .informacoes { display: block; padding: 5px; font-weight: bold }
+.codigoproduto i, .categoriaproduto i, .nomemarca i, .informacoes i, .precoproduto i { font-weight: normal; padding-right: 10px }
+.informacoes p { font-weight: normal}
+.precoproduto span {color: #1E74C5; font-weight:  bold; font-size: 18px}
+.carrinhoproduto { margin-top:  20px;padding-bottom: 5px; border-bottom: 1px solid #f0f0f0}
+.formlogout { display: inline-block; padding: 0; margin: 0;}
+.textologado { color: white}
+.textologado:hover {text-decoration: none; color:white}
+.modal-footer { padding: 0}
+.modal-header { padding: 0 15px; color: #368EE0}

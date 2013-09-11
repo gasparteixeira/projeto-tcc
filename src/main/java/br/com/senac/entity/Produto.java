@@ -92,6 +92,16 @@ public class Produto implements Serializable {
     public Produto() {
     }
 
+    public Produto(Integer id, String nome, BigDecimal preco, String codigo, Marca idmarca) {
+        this.id = id;
+        this.nome = nome;
+        this.preco = preco;
+        this.codigo = codigo;
+        this.idmarca = idmarca;
+    }
+    
+    
+
     public Produto(Integer id) {
         this.id = id;
     }
@@ -197,7 +207,7 @@ public class Produto implements Serializable {
     public void setGaleriaList(List<Galeria> galeriaList) {
         this.galeriaList = galeriaList;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -217,7 +227,17 @@ public class Produto implements Serializable {
         }
         return true;
     }
+    
+    public Integer getMarcaId(){
+        Integer i = 0;
+        if(this.idmarca!=null)
+         i = this.idmarca.getId();
+        return i;
+    }
 
+    public String returnEventProduto(){
+        return "Produto ["+nome+ " por R$ "+ preco + "]";
+    }
     @Override
     public String toString() {
         return nome;

@@ -14,6 +14,24 @@
             <title><ui:insert name="title"></ui:insert></title>
         </h:head>
         <h:body>
+            <div id="modal-3" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-header">
+                    <h4 id="myModalLabel"><i class="icon-warning-sign"></i> Atenção</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza que deseja sair  desta sessão?</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Não</button>
+                    <h:form prependId="false" styleClass="formlogout">
+                        <h:commandLink styleClass="btn btn-primary"  action="#{indexController.logout}">
+                            Sim
+                        </h:commandLink>
+                    </h:form>
+
+                </div>
+            </div>
+            
             <header>
                 <ui:insert name="header">
                     <ui:include src="/WEB-INF/templates/header.xhtml" />
@@ -26,7 +44,7 @@
             </article>
             <div class="divider-footer"></div>
             <footer>
-                
+
                 <ui:insert name="footer">
                     <ui:include src="/WEB-INF/templates/footer.xhtml" />
                 </ui:insert>

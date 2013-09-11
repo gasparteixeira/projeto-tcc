@@ -20,6 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -37,6 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Carrinho.findAll", query = "SELECT c FROM Carrinho c"),
     @NamedQuery(name = "Carrinho.findById", query = "SELECT c FROM Carrinho c WHERE c.id = :id"),
+    @NamedQuery(name = "Carrinho.findByUserId", query = "SELECT c FROM Carrinho c WHERE c.idusuario = :idusuario"),
     @NamedQuery(name = "Carrinho.findByQuantidade", query = "SELECT c FROM Carrinho c WHERE c.quantidade = :quantidade"),
     @NamedQuery(name = "Carrinho.findByValor", query = "SELECT c FROM Carrinho c WHERE c.valor = :valor"),
     @NamedQuery(name = "Carrinho.findByDatacadastro", query = "SELECT c FROM Carrinho c WHERE c.datacadastro = :datacadastro"),
@@ -71,6 +73,11 @@ public class Carrinho implements Serializable {
     @JoinColumn(name = "idproduto", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Produto idproduto;
+    
+    @PrePersist
+    protected void onCreate() {
+        datacadastro = new Date();
+    }
 
     public Carrinho() {
     }

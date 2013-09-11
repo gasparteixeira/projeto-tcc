@@ -19,7 +19,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlTransient;  
 
 /**
  *
@@ -42,6 +42,7 @@ public class Tipo implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
+
     @Column(name = "nome", nullable = false, length = 50)
     private String nome;
     @OneToMany(mappedBy = "idtipo")
@@ -106,7 +107,7 @@ public class Tipo implements Serializable {
 
     @Override
     public String toString() {
-        return "br.com.senac.entity.Tipo[ id=" + id + " ]";
+        return nome;
     }
     
 }

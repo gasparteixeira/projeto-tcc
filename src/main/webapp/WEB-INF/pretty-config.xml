@@ -9,10 +9,20 @@
 		<pattern value="/" />
 		<view-id value="/faces/pages/index.xhtml" />
 	</url-mapping>
-        
+     
         <url-mapping id="login">
 		<pattern value="/login" />
 		<view-id value="/faces/pages/login.xhtml" />
+	</url-mapping>
+        
+        <url-mapping id="cadastro">
+		<pattern value="/cadastre-se" />
+		<view-id value="/faces/pages/usuario.xhtml" />
+	</url-mapping>
+        
+        <url-mapping id="carrinho">
+		<pattern value="/meu-carrinho" />
+		<view-id value="/faces/pages/carrinho.xhtml" />
 	</url-mapping>
         
 	<url-mapping id="sistema">

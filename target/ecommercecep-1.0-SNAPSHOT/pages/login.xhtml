@@ -6,34 +6,36 @@ and open the template in the editor.
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:pretty="http://ocpsoft.com/prettyfaces">
     <ui:composition template="/WEB-INF/templates/template.xhtml">
         <ui:define name="title">Login Ecommerce - CEP</ui:define>
         <ui:define name="content">
 
             <div class=" login" style="display: block; width: 100%; height: 100vh"> 
                 <div class="wrapper">
-                    
+
                     <div class="login-body">
                         <h2>LOGIN</h2>
                         <h:messages  globalOnly="true"   styleClass="alert alert-error" style="list-style: none" />
                         <h:form id="frmLogin" prependId="false" style="margin: 0">
-                            
-                           
+
+
                             <h:message for="email" styleClass="error" />
                             <div class="email">
-                                
-                                <h:inputText placeholder="E-mail"   id="email" required="true" value="#{usuarioController.login}" 
-                                              validator="#{usuarioController.validateEmailAddress}"
-                                              requiredMessage="Digite seu e-mail no campo abaixo." styleClass="input-block-level" />
+
+                                <h:inputText    id="email" required="true" value="#{indexController.email}" 
+                                                validator="#{usuarioController.validateEmailAddress}"
+                                                requiredMessage="Digite seu e-mail no campo abaixo." styleClass="input-block-level" />
                             </div>
-                          
+
                             <h:message for="senha" styleClass="error" />
                             <div class="pw">
-                                <h:inputSecret placeholder="Senha"  id="senha" required="true" value="#{usuarioController.senha}" requiredMessage="Digite sua senha no campo abaixo." styleClass="input-block-level" />
+                                <h:inputSecret   id="senha" required="true" value="#{indexController.senha}" requiredMessage="Digite sua senha no campo abaixo." styleClass="input-block-level" />
                             </div>
-                            <div class="submit">
-                                <h:commandButton action="#{usuarioController.login}"  value="Processar" styleClass="btn btn-primary" />
+                            <div class="submit">    
+                                <pretty:link mappingId="cadastro">Casdastre-se</pretty:link>
+                                <h:commandButton action="#{indexController.login}"  value="Processar" styleClass="btn btn-primary" />
                             </div>
 
                         </h:form>
@@ -43,6 +45,12 @@ and open the template in the editor.
                     </div>
                 </div>
             </div> 
+            <script>
+                $(function(){
+                    $("#email").attr('placeholder', 'E-mail');
+                    $("#senha").attr('placeholder', 'Senha');
+                })
+            </script>
         </ui:define>
     </ui:composition>
 </html>

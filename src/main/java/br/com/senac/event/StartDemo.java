@@ -2,6 +2,7 @@ package br.com.senac.event;
 
 
 import br.com.senac.event.util.RandomPedidoEventGenerator;
+import com.espertech.esper.client.EPStatement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
@@ -15,6 +16,8 @@ public class StartDemo {
     
   
     public static void main(String[] args) throws Exception {
+        
+
 
 //        LOG.debug("Iniciando...");
 //

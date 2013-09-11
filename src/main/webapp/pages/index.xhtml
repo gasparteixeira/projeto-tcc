@@ -4,7 +4,8 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:payament="http://java.sun.com/jsf/composite/slots"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:f="http://java.sun.com/jsf/core">
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:pretty="http://ocpsoft.com/prettyfaces">
     <ui:define name="title">Ecommerce - CEP</ui:define>
     <ui:define name="content">
         <article>
@@ -60,9 +61,9 @@
 
                             <div class="pull-right">
                                 <ul class="minitiles">
-                                    <li class='teal'>
+                                    <!--<li class='teal'>
                                         <a href="#"><i class="icon-inbox"></i></a>
-                                    </li>
+                                    </li>-->
                                     <li class='red'>
                                         <a href="#"><i class="icon-cogs"></i></a>
                                     </li>
@@ -74,7 +75,17 @@
                                     <li class='blue'>
                                         <i class="icon-shopping-cart"></i>
                                         <div class="details">
-                                            <span class="big">0</span>
+                                            <span class="big">
+                                                <h:outputText rendered="#{not session.getAttribute('usuariologado')}" value="0" />
+                                                <h:panelGroup rendered="#{(indexController.contaCarrinho > 0)}">
+                                                    <pretty:link mappingId="carrinho" styleClass="textologado">
+                                                        <h:outputText value="#{indexController.contaCarrinho} #{(indexController.contaCarrinho > 1) ? 'ítens': 'ítem'}" />
+                                                    </pretty:link>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{(indexController.contaCarrinho == 0 and session.getAttribute('usuariologado'))}">
+                                                        <h:outputText value="#{indexController.contaCarrinho}" />
+                                                </h:panelGroup>
+                                            </span>
                                             <span>Meu Carrinho</span>
                                         </div>
                                     </li>
@@ -101,7 +112,7 @@
                                     <a href="more-login.html">Home</a>
                                     <i class="icon-angle-right"></i>
                                 </li>
-                                
+
                             </ul>
                             <div class="close-bread">
                                 <a href="#"><i class="icon-remove"></i></a>
@@ -130,14 +141,21 @@
                                                     </div>
                                                     <div class="preco">
                                                         <span class="de">
-                                                           Por R$: <h:outputText id="preco" value="#{p.preco}"> 
-                                                               <f:convertNumber for="preco" minFractionDigits="2" />
+                                                            Por R$: <h:outputText id="preco" value="#{p.preco}"> 
+                                                                <f:convertNumber for="preco" minFractionDigits="2" />
                                                             </h:outputText>
                                                         </span>
-                                                        
+
                                                     </div>
                                                     <div class="carrinho">
-                                                        <a href="#" class="comprar">comprar</a>
+                                                        <h:form prependId="false">
+                                                            <h:commandLink action="#{indexController.showItem}">
+                                                                <i class="icon-search"></i> visualizar
+                                                                <f:setPropertyActionListener target="#{indexController.selectedProduto}" value="#{p}" />
+                                                                <f:setPropertyActionListener target="#{indexController.selectedEvent}" value="#{p}" />
+                                                                
+                                                            </h:commandLink>
+                                                        </h:form>
                                                     </div>
 
                                                 </li>

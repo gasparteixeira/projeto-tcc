@@ -15,46 +15,99 @@
                         <span>Home</span>
                     </pretty:link>
                 </li>
-                <li>
-                    <h:link outcome="pretty:usuario">
-                        <span>Usuário</span>
+                <li style="#{(session.getAttribute('tipousuario') == 3 or session.getAttribute('tipousuario') == 6) ? 'block':'none'}">
+                    <h:link outcome="pretty:carrinho" rendered="#{session.getAttribute('tipousuario') == 3 or session.getAttribute('tipousuario') == 6}">
+                        <span>Meu Carrinho</span>
                     </h:link>
                 </li>
                 <li>
-                    <a href="#" data-toggle="dropdown" class='dropdown-toggle'>
-                        <i class="icon-th-large"></i>
-                        <span>Produtos</span>
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <h:link outcome="pretty:produto">
-                                <span>Produto</span>
-                            </h:link>
-                        </li>
-                        <li>
-                            <h:link outcome="pretty:galeria">
-                                <span>Imagens</span>
-                            </h:link>
-                        </li>
-                        <li>
-                            <h:link outcome="pretty:categoria">
-                                <span>Categoria</span>
-                            </h:link>
-                        </li>
-                        <li>
-                            <h:link outcome="pretty:marca">
-                                <span>Marca</span>
-                            </h:link>
-                        </li>
-                    </ul>
+                    <h:link outcome="pretty:usuario" rendered="#{(session.getAttribute('usuariologado') and session.getAttribute('tipousuario') != 3)}">
+                        <span>Usuário</span>
+                    </h:link>
+                    <h:link outcome="pretty:cadastro" rendered="#{not session.getAttribute('usuariologado')}">
+                        <span>Cadastre-se</span>
+                    </h:link>
+
+                </li>
+
+
+                <li>
+                    <h:panelGroup rendered="#{(session.getAttribute('usuariologado') and (session.getAttribute('tipousuario') == 4 or session.getAttribute('tipousuario') == 6))}">
+                        <a href="#" data-toggle="dropdown" class='dropdown-toggle'>
+                            <i class="icon-th-large"></i>
+                            <span>Produtos</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <h:link outcome="pretty:produto">
+                                    <span>Produto</span>
+                                </h:link>
+                            </li>
+                            <li>
+                                <h:link outcome="pretty:galeria">
+                                    <span>Imagens</span>
+                                </h:link>
+                            </li>
+                            <li>
+                                <h:link outcome="pretty:categoria">
+                                    <span>Categoria</span>
+                                </h:link>
+                            </li>
+                            <li>
+                                <h:link outcome="pretty:marca">
+                                    <span>Marca</span>
+                                </h:link>
+                            </li>
+                        </ul>
+                    </h:panelGroup> 
+                </li>
+                <li>
+                    <h:panelGroup rendered="#{(session.getAttribute('usuariologado') and (session.getAttribute('tipousuario') == 5 or session.getAttribute('tipousuario')==6))}">
+                        <a href="#" data-toggle="dropdown" class='dropdown-toggle'>
+                            <i class="icon-th-large"></i>
+                            <span>Gerenciamento</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <h:link outcome="pretty:sistema">
+                                    <span>Monitoramento Pedidos</span>
+                                </h:link>
+                            </li>
+                            <li>
+                                <h:link outcome="pretty:sistema">
+                                    <span>Mais Vendidos</span>
+                                </h:link>
+                            </li>
+                            <li>
+                                <h:link outcome="pretty:sistema">
+                                    <span>Registro de Fraudes</span>
+                                </h:link>
+                            </li>
+
+
+                        </ul>
+                    </h:panelGroup>
+
                 </li>
 
             </ul>
-            <div class="login-right">
-                <pretty:link styleClass="loginaccess" mappingId="login">
-                    Login
+            <div class="login-right" style="z-index:1050">
+
+                <pretty:link styleClass="loginaccess" mappingId="login" rendered="#{!request.session.getAttribute('usuariologado')}" >
+                    <i class="icon-signin"></i> 
+                    Login 
                 </pretty:link>
+                <h:panelGroup styleClass="textologado" rendered="#{request.session.getAttribute('usuariologado')}">
+                    Bem vindo <b> #{session.getAttribute("usuarioNome")}</b>
+                </h:panelGroup>
+                <h:form prependId="false" styleClass="formlogout" rendered="#{request.session.getAttribute('usuariologado')}" >
+                    <a href="#modal-3" role="button" class="loginaccess" data-toggle="modal">
+                        <i class="icon-signout"></i>
+                        Sair
+                    </a>
+                </h:form>
             </div>
         </div>
     </div>

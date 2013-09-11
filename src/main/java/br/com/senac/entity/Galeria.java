@@ -47,8 +47,8 @@ public class Galeria implements Serializable {
     private String imagem;
     @Column(name = "destaque")
     private Boolean destaque;
-    @JoinColumn(name = "idproduto", referencedColumnName = "id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "idproduto")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false )
     private Produto idproduto;
 
     public Galeria() {

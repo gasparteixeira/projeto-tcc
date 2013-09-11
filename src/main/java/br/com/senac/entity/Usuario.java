@@ -15,7 +15,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -46,6 +45,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findByCpf", query = "SELECT u FROM Usuario u WHERE u.cpf = :cpf"),
     @NamedQuery(name = "Usuario.findByEmail", query = "SELECT u FROM Usuario u WHERE u.email = :email"),
     @NamedQuery(name = "Usuario.findBySenha", query = "SELECT u FROM Usuario u WHERE u.senha = :senha"),
+    @NamedQuery(name = "Usuario.findByLogin", query = "SELECT u FROM Usuario u WHERE u.email = :email AND u.senha = :senha"),
     @NamedQuery(name = "Usuario.findByDatacriacao", query = "SELECT u FROM Usuario u WHERE u.datacriacao = :datacriacao")})
 public class Usuario implements Serializable {
 
@@ -79,13 +79,12 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40)
-    @Column(name = "senha", nullable = false, length = 40)
+    @Column(name = "senha", nullable = false, length = 40 )
     private String senha;
     @Column(name = "datacriacao")
     @Temporal(TemporalType.TIMESTAMP)
     private Date datacriacao;
     @JoinColumn(name = "idtipo", referencedColumnName = "id")
-    @ManyToOne
     private Tipo idtipo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusuario")
     private List<Carrinho> carrinhoList;
@@ -96,7 +95,9 @@ public class Usuario implements Serializable {
 
     @PrePersist
     protected void onCreate() {
+        
         datacriacao = new Date();
+
     }
 
     public Usuario() {
@@ -228,6 +229,6 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "br.com.senac.entity.Usuario[ id=" + id + " ]";
+        return nome;
     }
 }

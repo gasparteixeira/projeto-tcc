@@ -12,10 +12,7 @@
         <validator-class>br.com.senac.validate.ValidatorConfirmaSenha</validator-class>
     </validator>
     <phase-listener>br.com.senac.mb.utils.MultiPageMessagesSupport</phase-listener>
-    
-    <factory>
-        <render-kit-factory>org.omnifaces.renderkit.Html5RenderKitFactory</render-kit-factory>
-    </factory>
+  
     <application>
         <resource-bundle>
             <base-name>/resources/Bundle</base-name>

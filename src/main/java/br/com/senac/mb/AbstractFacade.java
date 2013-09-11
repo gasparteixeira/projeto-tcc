@@ -5,7 +5,11 @@
 package br.com.senac.mb;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -13,6 +17,8 @@ import javax.persistence.EntityManager;
  */
 public abstract class AbstractFacade<T> {
     private Class<T> entityClass;
+    @PersistenceContext
+    private EntityManager em;
 
     public AbstractFacade(Class<T> entityClass) {
         this.entityClass = entityClass;
@@ -34,6 +40,19 @@ public abstract class AbstractFacade<T> {
 
     public T find(Object id) {
         return getEntityManager().find(entityClass, id);
+    }
+    
+    
+    public List findWithNamedQuery(java.lang.String namedQueryName, java.util.Map parameters, int resultLimit) {
+        Set<Map.Entry<String, Object>> rawParameters = parameters.entrySet();
+        Query query = this.em.createNamedQuery(namedQueryName);
+        if (resultLimit > 0) {
+            query.setMaxResults(resultLimit);
+        }
+        for (Map.Entry<String, Object> entry : rawParameters) {
+            query.setParameter(entry.getKey(), entry.getValue());
+        }
+        return query.getResultList();
     }
 
     public List<T> findAll() {

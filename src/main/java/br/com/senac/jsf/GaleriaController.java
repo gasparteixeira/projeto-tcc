@@ -4,10 +4,6 @@ import br.com.senac.entity.Galeria;
 import br.com.senac.jsf.util.JsfUtil;
 import br.com.senac.jsf.util.PaginationHelper;
 import br.com.senac.mb.GaleriaFacade;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -16,7 +12,6 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
@@ -25,6 +20,8 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.StreamedContent;
+
+
 
 @Named("galeriaController")
 @SessionScoped
@@ -49,8 +46,13 @@ public class GaleriaController implements Serializable {
         }
         return current;
     }
-
-    public void loadFile(FileUploadEvent event) throws IOException, InterruptedException {
+    
+    public void handleFileUpload (FileUploadEvent event) {
+        FacesMessage msg = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");  
+        FacesContext.getCurrentInstance().addMessage(null, msg);  
+    }
+    
+   /* public void loadFile(FileUploadEvent event) throws IOException, InterruptedException {
 
         ExternalContext extContext =
                 FacesContext.getCurrentInstance().getExternalContext();
@@ -88,7 +90,7 @@ public class GaleriaController implements Serializable {
                     "The files were not uploaded!", "");
             FacesContext.getCurrentInstance().addMessage(null, error);
         } 
-    }
+    }*/
     
 
     private GaleriaFacade getFacade() {

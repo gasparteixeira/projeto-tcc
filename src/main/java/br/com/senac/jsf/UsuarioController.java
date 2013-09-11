@@ -1,15 +1,22 @@
 package br.com.senac.jsf;
 
+import br.com.senac.entity.Tipo;
 import br.com.senac.entity.Usuario;
 import br.com.senac.jsf.util.JsfUtil;
 import br.com.senac.jsf.util.PaginationHelper;
 import br.com.senac.mb.UsuarioFacade;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -17,6 +24,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.faces.validator.ValidatorException;
 
 @Named("usuarioController")
 @SessionScoped
@@ -28,8 +36,22 @@ public class UsuarioController implements Serializable {
     private br.com.senac.mb.UsuarioFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    private Pattern emailPattern;
+    private Pattern cpfPattern;
+    private Matcher matcher;
+    private static final String CPF_PATTERN = "[0-9]{2,3}?\\.[0-9]{3}?\\.[0-9]{3}?\\-[0-9]{2}?";
+    private static final String EMAIL_PATTERN =
+            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    private String nome;
+    private String cpf;
+    private String sobrenome;
+    private String email;
+    private String senha;
 
     public UsuarioController() {
+        emailPattern = Pattern.compile(EMAIL_PATTERN);
+        cpfPattern = Pattern.compile(CPF_PATTERN);
     }
 
     public Usuario getSelected() {
@@ -59,6 +81,30 @@ public class UsuarioController implements Serializable {
             };
         }
         return pagination;
+    }
+
+    public String cadastro() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().getFlash().setKeepMessages(true);
+        Map parameterMap = context.getExternalContext().getRequestParameterMap();
+
+        Usuario u = new Usuario();
+        u.setNome(parameterMap.get("nome").toString());
+        u.setEmail(parameterMap.get("email").toString());
+        u.setSobrenome(parameterMap.get("sobrenome").toString());
+        u.setCpf(parameterMap.get("cpf").toString().replace("-", "").replace(".", ""));
+        u.setSenha(parameterMap.get("senha").toString());
+        Tipo t = new Tipo();
+        t.setId(3);
+        u.setIdtipo(t);
+        try {
+            getFacade().create(u);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuário cadastrado com sucesso.", null));
+            return "pretty:login";
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuário NÃO efetuado. Tente novamente.", null));
+            return "pretty:cadastro";
+        }
     }
 
     public String prepareList() {
@@ -189,6 +235,107 @@ public class UsuarioController implements Serializable {
 
     public Usuario getUsuario(java.lang.Integer id) {
         return ejbFacade.find(id);
+    }
+
+    public void validateEmailAddress(FacesContext context, UIComponent component, Object value) {
+        String email = (String) value;
+        matcher = emailPattern.matcher(email);
+
+        if (!matcher.matches()) {
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setDetail("E-mail inválido.");
+            context.addMessage("frmUsuario:email", message);
+            throw new ValidatorException(message);
+        }
+    }
+
+    public void validateEmailUnico(FacesContext context, UIComponent component, Object value) {
+        String email = (String) value;
+        Map map = new HashMap();
+        map.put("email", email);
+
+        matcher = emailPattern.matcher(email);
+
+        if (!matcher.matches()) {
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setDetail("E-mail inválido.");
+            context.addMessage("frmUsuario:email", message);
+            throw new ValidatorException(message);
+        }
+
+        List<Usuario> user = ejbFacade.findWithNamedQuery("Usuario.findByEmail", map, 0);
+        if (!user.isEmpty()) {
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setDetail("O E-mail '" + email + "' já foi cadastrado anteriormente.");
+            context.addMessage("frmUsuario:email", message);
+            throw new ValidatorException(message);
+        }
+    }
+
+    public void validateCPFUnico(FacesContext context, UIComponent component, Object value) {
+        String cpf = (String) value;
+        Map map = new HashMap();
+        map.put("cpf", cpf.toString().replace(".", "").replace("-", ""));
+        matcher = cpfPattern.matcher(cpf);
+        if (!matcher.matches()) {
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setDetail("CPF inválido.");
+            context.addMessage("frmUsuario:cpf", message);
+            throw new ValidatorException(message);
+        }
+
+        List<Usuario> user = ejbFacade.findWithNamedQuery("Usuario.findByCpf", map, 0);
+        if (!user.isEmpty()) {
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setDetail("O CPF '" + cpf + "' já foi cadastrado anteriormente.");
+            context.addMessage("frmUsuario:cpf", message);
+            throw new ValidatorException(message);
+        }
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getSobrenome() {
+        return sobrenome;
+    }
+
+    public void setSobrenome(String sobrenome) {
+        this.sobrenome = sobrenome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     @FacesConverter(forClass = Usuario.class)
