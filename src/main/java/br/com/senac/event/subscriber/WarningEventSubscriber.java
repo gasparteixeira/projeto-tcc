@@ -1,6 +1,6 @@
 package br.com.senac.event.subscriber;
 
-import br.com.senac.event.event.PedidoEvent;
+import br.com.senac.entity.PedidoEvent;
 import br.com.senac.mb.PedidoMB;
 import java.util.Map;
 

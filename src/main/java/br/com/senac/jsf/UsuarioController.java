@@ -238,8 +238,8 @@ public class UsuarioController implements Serializable {
     }
 
     public void validateEmailAddress(FacesContext context, UIComponent component, Object value) {
-        String email = (String) value;
-        matcher = emailPattern.matcher(email);
+
+        matcher = emailPattern.matcher(value.toString());
 
         if (!matcher.matches()) {
             FacesMessage message = new FacesMessage();
@@ -251,11 +251,10 @@ public class UsuarioController implements Serializable {
     }
 
     public void validateEmailUnico(FacesContext context, UIComponent component, Object value) {
-        String email = (String) value;
         Map map = new HashMap();
-        map.put("email", email);
+        map.put("email", value.toString());
 
-        matcher = emailPattern.matcher(email);
+        matcher = emailPattern.matcher(value.toString());
 
         if (!matcher.matches()) {
             FacesMessage message = new FacesMessage();
@@ -276,10 +275,10 @@ public class UsuarioController implements Serializable {
     }
 
     public void validateCPFUnico(FacesContext context, UIComponent component, Object value) {
-        String cpf = (String) value;
+
         Map map = new HashMap();
-        map.put("cpf", cpf.toString().replace(".", "").replace("-", ""));
-        matcher = cpfPattern.matcher(cpf);
+        map.put("cpf", value.toString().replace(".", "").replace("-", ""));
+        matcher = cpfPattern.matcher(value.toString());
         if (!matcher.matches()) {
             FacesMessage message = new FacesMessage();
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
@@ -288,14 +287,90 @@ public class UsuarioController implements Serializable {
             throw new ValidatorException(message);
         }
 
+        if (!validaCPF(value.toString().replace(".", "").replace("-", ""))) {
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setDetail("CPF inválido.");
+            context.addMessage("frmUsuario:cpf", message);
+            throw new ValidatorException(message);
+        }
+
+
+
         List<Usuario> user = ejbFacade.findWithNamedQuery("Usuario.findByCpf", map, 0);
         if (!user.isEmpty()) {
             FacesMessage message = new FacesMessage();
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
-            message.setDetail("O CPF '" + cpf + "' já foi cadastrado anteriormente.");
+            message.setDetail("O CPF '" + value.toString() + "' já foi cadastrado anteriormente.");
             context.addMessage("frmUsuario:cpf", message);
             throw new ValidatorException(message);
         }
+    }
+
+    public boolean validaCPF(String cpf) {
+        boolean ret = false;
+        String base = "000000000";
+        String digitos = "00";
+
+        if (cpf.equals("00000000000")
+                || cpf.equals("11111111111")
+                || cpf.equals("22222222222")
+                || cpf.equals("33333333333")
+                || cpf.equals("44444444444")
+                || cpf.equals("55555555555")
+                || cpf.equals("66666666666")
+                || cpf.equals("77777777777")
+                || cpf.equals("88888888888")
+                || cpf.equals("99999999999")) {
+            return false;
+        }
+
+        if (cpf.length() <= 11) {
+            if (cpf.length() < 11) {
+                cpf = base.substring(0, 11 - cpf.length()) + cpf;
+                base = cpf.substring(0, 9);
+            }
+            base = cpf.substring(0, 9);
+            digitos = cpf.substring(9, 11);
+            int soma = 0, mult = 11;
+            int[] var = new int[11];
+            // Recebe os números e realiza a multiplicação e soma.  
+            for (int i = 0; i < 9; i++) {
+                var[i] = Integer.parseInt("" + cpf.charAt(i));
+                if (i < 9) {
+                    soma += (var[i] * --mult);
+                }
+            }
+            // Cria o primeiro dígito verificador.  
+            int resto = soma % 11;
+            if (resto < 2) {
+                var[9] = 0;
+            } else {
+                var[9] = 11 - resto;
+            }
+            // Reinicia os valores.  
+            soma = 0;
+            mult = 11;
+            // Realiza a multiplicação e soma do segundo dígito.  
+            for (int i = 0; i < 10; i++) {
+                soma += var[i] * mult--;
+            }
+            // Cria o segundo dígito verificador.  
+            resto = soma % 11;
+            if (resto < 2) {
+                var[10] = 0;
+            } else {
+                var[10] = 11 - resto;
+            }
+            if ((digitos.substring(0, 1).equalsIgnoreCase(new Integer(var[9])
+                    .toString()))
+                    && (digitos.substring(1, 2).equalsIgnoreCase(new Integer(
+                    var[10]).toString()))) {
+                ret = true;
+            }
+        }
+        System.out.println(ret);
+        return ret;
     }
 
     public String getNome() {

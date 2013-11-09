@@ -1,6 +1,6 @@
 package br.com.senac.event.util;
 
-import br.com.senac.event.event.PedidoEvent;
+import br.com.senac.entity.PedidoEvent;
 import br.com.senac.event.handler.PedidoEventHandler;
 import java.util.Date;
 import java.util.Random;

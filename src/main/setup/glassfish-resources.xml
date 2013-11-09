@@ -6,7 +6,7 @@
         <property name="serverName" value="localhost"/>
         <property name="databaseName" value="ecommerce"/>
         <property name="User" value="postgres"/>
-        <property name="Password" value=""/>
+        <property name="Password" value="postgres"/>
         <property name="URL" value="jdbc:postgresql://localhost/ecommerce"/>
         <property name="driverClass" value="org.postgresql.Driver"/>
     </jdbc-connection-pool>

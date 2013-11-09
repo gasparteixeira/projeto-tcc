@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <div id="left" class="ui-resizable">
+
+            <h:form  styleClass="search-form" >
+                <div class="search-pane">
+                    <h:inputText id="search" value="#{indexController.nomeProduto}" styleClass="search" />
+                    <h:commandButton action="#{indexController.porBusca}" styleClass="search-icone"/>
+                </div>
+            </h:form>
+            <div class="subnav">
+                <div class="subnav-title">
+                    <a href="#" class='toggle-subnav'><i class="icon-angle-down"></i><span>Categorias</span></a>
+                </div>
+                <h:form prependId="false">
+                    <ul class="subnav-menu">
+
+                        <ui:repeat value="#{indexController.listaCategoria}" var="c">
+                            <li>
+                                <h:commandLink action="#{indexController.porCategoria}">
+                                    <h:outputText value="#{c.nome}" />
+                                    <f:setPropertyActionListener target="#{indexController.idCategoria}" value="#{c}" />
+                                </h:commandLink>
+                            </li>
+                        </ui:repeat>
+                    </ul>
+                </h:form>
+            </div>
+            <div class="subnav">
+                <div class="subnav-title">
+                    <a href="#" class='toggle-subnav'><i class="icon-angle-down"></i><span>Marcas</span></a>
+                </div>
+                <h:form prependId="false">
+                    <ul class="subnav-menu">
+                        <ui:repeat value="#{indexController.listaMarca}" var="m">
+                            <li>
+                                <h:commandLink action="#{indexController.porMarca}">
+                                    <h:outputText value="#{m.nome}" />
+                                    <f:setPropertyActionListener target="#{indexController.idMarca}" value="#{m}"/>
+                                </h:commandLink>
+                            </li>
+                        </ui:repeat>
+                    </ul>
+                </h:form>
+            </div>
+
+        </div>
+        <script>
+            $(function() {
+                $(".search").attr('placeholder', 'Buscar por...');
+            })
+        </script>
+    </cc:implementation>
+</html>

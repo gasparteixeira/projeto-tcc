@@ -1,6 +1,6 @@
 package br.com.senac.event.handler;
 
-import br.com.senac.event.event.PedidoEvent;
+import br.com.senac.entity.PedidoEvent;
 import br.com.senac.event.subscriber.StatementSubscriber;
 import br.com.senac.mb.PedidoMB;
 import org.slf4j.Logger;
@@ -48,7 +48,7 @@ public class PedidoEventHandler implements InitializingBean{
 
         LOG.debug("Inicializando Serviço ..");
         Configuration config = new Configuration();
-        config.addEventTypeAutoName("br.com.senac.event.event");
+        config.addEventTypeAutoName("br.com.senac.entity");
         epService = EPServiceProviderManager.getDefaultProvider(config);
 
         createCriticalPedidoCheckExpression();

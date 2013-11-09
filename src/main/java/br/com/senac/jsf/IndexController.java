@@ -20,14 +20,25 @@ import com.espertech.esper.client.Configuration;
 import com.espertech.esper.client.EPServiceProvider;
 import com.espertech.esper.client.EPServiceProviderManager;
 import com.espertech.esper.client.EPStatement;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.ejb.EJB;
@@ -73,10 +84,16 @@ public class IndexController implements Serializable {
     private static final String PASSWORD_PATTERN =
             "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{5,20})";
     public static boolean showEventoProduto = false;
-
+    private Categoria idCategoria;
+    private Marca idMarca;
+    private String nomeProduto;
+    private List<Produto> listaProdutos = new ArrayList<Produto>();
+    private String tituloPagina;
 
     public IndexController() {
         pattern = Pattern.compile(PASSWORD_PATTERN);
+        tituloPagina = "Todos os produtos";
+
     }
 
     public List<Categoria> getListaCategoria() {
@@ -90,8 +107,11 @@ public class IndexController implements Serializable {
     }
 
     public List<Produto> getListaProduto() {
-        List<Produto> lista = produtoFacade.findAll();
-        return lista;
+        if (listaProdutos == null || listaProdutos.isEmpty()) {
+            listaProdutos = produtoFacade.findAll();
+        }
+
+        return listaProdutos;
     }
 
     public List<Carrinho> getListaCarrinho() throws IOException {
@@ -113,10 +133,74 @@ public class IndexController implements Serializable {
         return listcar;
     }
 
+    public String porCategoria() {
+        Map map = new HashMap();
+        Produto p = new Produto();
+        p.setIdcategoria(idCategoria);
+        map.put("idcategoria", idCategoria);
+
+        listaProdutos = produtoFacade.findWithNamedQuery("Produto.findByCategoria", map, 0);
+        tituloPagina = "Pela categoria '" + listaProdutos.get(0).getIdcategoria().getNome() + "'";
+
+        return null;
+    }
+
+    public String porMarca() {
+        Map map = new HashMap();
+        Produto p = new Produto();
+        p.setIdmarca(idMarca);
+        map.put("idmarca", idMarca);
+
+        listaProdutos = produtoFacade.findWithNamedQuery("Produto.findByMarca", map, 0);
+        tituloPagina = "Pela marca '" + listaProdutos.get(0).getIdmarca().getNome() + "'";
+        return null;
+    }
+
+    public String porBusca() {
+        Map map = new HashMap();
+        Produto p = new Produto();
+        p.setNome(nomeProduto);
+        map.put("nomeProduto", "%" + nomeProduto + "%");
+
+        listaProdutos = produtoFacade.findWithNamedQuery("Produto.findByBusca", map, 0);
+        tituloPagina = "Resultado da busca por '" + nomeProduto + "'.";
+
+        return null;
+    }
+
+    public String getPegaDataAtual() {
+        Date hoje = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
+        return sdf.format(hoje);
+    }
+
+    public String getPegaDiaTempo() {
+        Date hoje = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("E, HH:mm");
+        return sdf.format(hoje);
+    }
+
+    public String getDolarCotacao() {
+        String valor = "2,18";
+        /*try {
+            URL url = new URL("http://dolarhoje.com/cotacao.txt");
+            InputStream is = url.openStream();
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            while ((valor = br.readLine()) != null) {
+
+            }
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(IndexController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(IndexController.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+        return valor;
+    }
+
     public String showItem() {
 
-        //Produto p = new Produto(selectedEvent.getId(), selectedEvent.getNome(), selectedEvent.getPreco(), selectedEvent.getCodigo(), selectedEvent.getIdmarca());
-        Produto p = new Produto();
+        Produto p = new Produto(selectedEvent.getId(), selectedEvent.getNome(), selectedEvent.getPreco(), selectedEvent.getCodigo(), selectedEvent.getIdmarca());
         runProduto(p);
 
         return "show";
@@ -132,12 +216,18 @@ public class IndexController implements Serializable {
         map.put("email", parameterMap.get("email").toString());
         map.put("senha", parameterMap.get("senha").toString());
 
-        LoginEvent le = new LoginEvent(parameterMap.get("email").toString(), parameterMap.get("senha").toString());
+        Usuario us = new Usuario(parameterMap.get("email").toString(), parameterMap.get("senha").toString());
 
-        run(le);
+        runUsuario(us);
 
         matcher = pattern.matcher(parameterMap.get("senha").toString());
         if (!matcher.matches()) {
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setSummary("Usuário e ou senha inválidos.");
+
+            context.addMessage(null, message);
+
             return null;
         }
         try {
@@ -213,6 +303,28 @@ public class IndexController implements Serializable {
         stmt.setSubscriber(new ObserverProduto());
 
         engine.getEPRuntime().sendEvent(p);
+    }
+
+    public void runUsuario(Usuario u) {
+
+        Configuration configuration = new Configuration();
+        configuration.addEventTypeAutoName("br.com.senac.entity");
+
+        EPServiceProvider engine = EPServiceProviderManager.getDefaultProvider(configuration);
+
+        String query = "select * from Usuario "
+                + "match_recognize ( "
+                + "       measures A as total, B as total1, C as total2  "
+                + "       pattern (A B C) "
+                + "       define "
+                + "             A as A.senha != '' and A.email != '', "
+                + "             B as B.senha = A.senha and B.email = A.email, "
+                + "             C as C.senha = A.senha and C.email = A.email ) ";
+
+        EPStatement stmt = engine.getEPAdministrator().createEPL(query);
+        stmt.setSubscriber(new ObserverUsuario());
+
+        engine.getEPRuntime().sendEvent(u);
     }
 
     public String meuCarrinho() {
@@ -399,13 +511,53 @@ public class IndexController implements Serializable {
     public void setSelectedEvent(Produto selectedEvent) {
         this.selectedEvent = selectedEvent;
     }
-    
 
-    public boolean getAlerta(){
+    public boolean getAlerta() {
         return showEventoProduto;
     }
-    public void cancelar(){
+
+    public void cancelar() {
         showEventoProduto = false;
+    }
+
+    public Categoria getIdCategoria() {
+        return idCategoria;
+    }
+
+    public void setIdCategoria(Categoria idCategoria) {
+        this.idCategoria = idCategoria;
+    }
+
+    public List<Produto> getListaProdutos() {
+        return listaProdutos;
+    }
+
+    public void setListaProdutos(List<Produto> listaProdutos) {
+        this.listaProdutos = listaProdutos;
+    }
+
+    public Marca getIdMarca() {
+        return idMarca;
+    }
+
+    public void setIdMarca(Marca idMarca) {
+        this.idMarca = idMarca;
+    }
+
+    public String getNomeProduto() {
+        return nomeProduto;
+    }
+
+    public void setNomeProduto(String nomeProduto) {
+        this.nomeProduto = nomeProduto;
+    }
+
+    public String getTituloPagina() {
+        return tituloPagina;
+    }
+
+    public void setTituloPagina(String tituloPagina) {
+        this.tituloPagina = tituloPagina;
     }
 
     public class Observer {
@@ -418,10 +570,42 @@ public class IndexController implements Serializable {
     public class ObserverProduto {
 
         public void update(Map<String, Produto> eventMap) {
-          Produto total = (Produto) eventMap.get("total");
-            
+            Produto total = (Produto) eventMap.get("total");
+
             System.out.println("a marca sansung foi clicada: " + total.getCodigo());
             IndexController.showEventoProduto = true;
+        }
+    }
+    public static Boolean alertaUser = Boolean.FALSE;
+    public static String mensagemSenha = "";
+    private String mensagem = "";
+
+    public String getMensagem() {
+
+        return mensagem = mensagemSenha;
+    }
+
+    public void setMensagem(String mensagem) {
+        this.mensagem = mensagem;
+    }
+
+    public void cancela() {
+        alertaUser = Boolean.FALSE;
+        mensagemSenha = "";
+    }
+
+    public Boolean getAlertar() {
+        return alertaUser;
+    }
+
+    public class ObserverUsuario {
+
+        public void update(Map<String, Usuario> eventMap) {
+
+            Usuario total = (Usuario) eventMap.get("total");
+            mensagemSenha = "<h3><i class='icon-info-sign'></i>Atenção:</h3> Você já tentou 3 vezes a senha '<b>" + total.getSenha() + "</b>' para o e-mail '<b>" + total.getEmail() + "</b>'.<br/>Provavelmente você esqueceu sua senha. <b>Habilitei</b> o link abaixo para a troca de senha.";
+            System.out.println("O ususario total eh " + total.getSenha());
+            alertaUser = Boolean.TRUE;
         }
     }
 }

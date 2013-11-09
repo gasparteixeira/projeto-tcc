@@ -792,7 +792,8 @@ a:focus { outline: none;text-decoration:none }
 .search-form>.search-pane { margin: 5px;height:28px;background:#fff;border:1px solid #ccc }
 .search-form>.search-pane>input { background: none;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;border:0;float:left;font-size:12px;margin-bottom:0;margin-top:1px;width:145px }
 .search-form>.search-pane>input:focus { -webkit-box-shadow: none;-moz-box-shadow:none;box-shadow:none }
-.search-form>.search-pane button[type="submit"] { float: right;background:#368ee0;color:#fff;border:0;margin:2px 2px 0px 0;line-height:19px;min-height:24px }
+.search-form>.search-pane input[type="submit"] { float: right;color:#fff;border:0;margin:2px 2px 0px 0;line-height:19px;min-height:24px; width: 26px!important}
+.search-form>.search-pane .search-icone { background: url("#{resource['/images/icone-search.png']}") no-repeat right center #eee}
 .custom-checkbox { position: relative;padding-right:30px }
 .custom-checkbox i { position: absolute;right:10px;top:9px }
 .flot { width: 100%;height:300px }
@@ -1237,3 +1238,4 @@ footer span { padding-right: 60px }
 .textologado:hover {text-decoration: none; color:white}
 .modal-footer { padding: 0}
 .modal-header { padding: 0 15px; color: #368EE0}
+.subtitulo { font-size: 10px; line-height: 12px; font-style: italic}

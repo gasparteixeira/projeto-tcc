@@ -4,7 +4,6 @@
  */
 package br.com.senac.event.event;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**

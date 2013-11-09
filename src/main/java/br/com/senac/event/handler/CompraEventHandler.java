@@ -27,7 +27,7 @@ import org.springframework.stereotype.Component;
 @Scope(value = "singleton")
 public class CompraEventHandler implements InitializingBean{
     
-    private static Logger LOG = LoggerFactory.getLogger(PedidoEventHandler.class);
+    private static Logger LOG = LoggerFactory.getLogger(CompraEventHandler.class);
     
     private EPServiceProvider epService;
     private EPStatement monitorEventStatement;
@@ -63,13 +63,15 @@ public class CompraEventHandler implements InitializingBean{
         monitorEventStatement = epService.getEPAdministrator().createEPL(monitorEventSubscriber.getStatement());
         monitorEventStatement.setSubscriber(monitorEventSubscriber);
     }
-    
-    
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    
+
+    
 
     
 }
