@@ -5,6 +5,7 @@
 $(function() {
     $.mask.definitions['~'] = "[+-]";
     $("#cpf").mask("999.999.999-99");
+    $(".mask_card").mask("9999 9999 9999 9999",{placeholder:" "});
     
     openDialog = function(data){
         $('#modal-3').dialog({

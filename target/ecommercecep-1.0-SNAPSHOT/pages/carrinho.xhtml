@@ -3,6 +3,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:payament="http://java.sun.com/jsf/composite/slots"
+                xmlns:indicador="http://java.sun.com/jsf/composite/slots"
                 xmlns:mv="http://java.sun.com/jsf/composite/slots"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:pretty="http://ocpsoft.com/prettyfaces"
@@ -53,20 +54,7 @@
                                             <span>Meu Carrinho</span>
                                         </div>
                                     </li>
-                                    <li class='green'>
-                                        <i class="icon-money"></i>
-                                        <div class="details">
-                                            <span class="big">R$ 2,12</span>
-                                            <span>Dollar</span>
-                                        </div>
-                                    </li>
-                                    <li class='orange'>
-                                        <i class="icon-calendar"></i>
-                                        <div class="details">
-                                            <span class="big">Set 02, 2013</span>
-                                            <span>Segunda, 13:56</span>
-                                        </div>
-                                    </li>
+                                    <indicador:indicadores/>
                                 </ul>
                             </div>
                         </div>
@@ -146,8 +134,12 @@
                                             </h:column>
                                             <f:facet name="footer" class="left">
                                                 
-                                                <h:commandLink action="pretty:categoriaNew" styleClass="btn btn-small">
-                                                    <span class="iconNew"></span>Total
+                                                <h:commandLink action="pretty:home" styleClass="btn btn-small">
+                                                    <span class="iconNew"></span>Contiuar Comprando
+                                                </h:commandLink>
+                                                
+                                                <h:commandLink action="pretty:compra" styleClass="btn btn-small">
+                                                    <i class="icon-money"></i> Fechar compra
                                                 </h:commandLink>
                                                     
                                             </f:facet>

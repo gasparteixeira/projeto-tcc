@@ -3,6 +3,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:payament="http://java.sun.com/jsf/composite/slots"
+                xmlns:indicador="http://java.sun.com/jsf/composite/slots"
                 xmlns:mv="http://java.sun.com/jsf/composite/slots"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://java.sun.com/jsf/core"
@@ -53,30 +54,7 @@
                                             <span>Meu Carrinho</span>
                                         </div>
                                     </li>
-                                    <li class='green'>
-                                        <i class="icon-money"></i>
-                                        <div class="details">
-                                            <span class="big">R$ <h:outputFormat value="#{indexController.dolarCotacao}" /></span>
-                                            <span>Dollar</span>
-                                        </div>
-                                    </li>
-                                    <li class='orange'>
-                                        <i class="icon-calendar"></i>
-                                        <div class="details">
-                                            <span class="big">
-                                                <h:outputFormat value="#{indexController.pegaDataAtual}">
-                                                    <f:convertDateTime  dateStyle="long" />
-                                                </h:outputFormat>
-                                            </span>
-                                            <span>
-                                                <h:outputFormat value="#{indexController.pegaDiaTempo}h">
-                                                    <f:convertDateTime  dateStyle="long" />
-                                                </h:outputFormat>
-                                                
-                                            </span>
-                                            
-                                        </div>
-                                    </li>
+                                    <indicador:indicadores/>
                                 </ul>
                             </div>
                         </div>

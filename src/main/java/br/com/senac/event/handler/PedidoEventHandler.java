@@ -57,7 +57,7 @@ public class PedidoEventHandler implements InitializingBean{
 
     }
 
-    
+
     private void createCriticalPedidoCheckExpression() {
         
         LOG.debug("criando Pedido Crítico baseado na Expressão");

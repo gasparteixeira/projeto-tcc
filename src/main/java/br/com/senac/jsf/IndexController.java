@@ -20,25 +20,16 @@ import com.espertech.esper.client.Configuration;
 import com.espertech.esper.client.EPServiceProvider;
 import com.espertech.esper.client.EPServiceProviderManager;
 import com.espertech.esper.client.EPStatement;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.ejb.EJB;
@@ -89,11 +80,13 @@ public class IndexController implements Serializable {
     private String nomeProduto;
     private List<Produto> listaProdutos = new ArrayList<Produto>();
     private String tituloPagina;
-
+    public  static boolean viewProduto = false;
+    @EJB
+    private ServicoEventoController service;
+    
     public IndexController() {
         pattern = Pattern.compile(PASSWORD_PATTERN);
         tituloPagina = "Todos os produtos";
-
     }
 
     public List<Categoria> getListaCategoria() {
@@ -167,6 +160,12 @@ public class IndexController implements Serializable {
 
         return null;
     }
+    
+    public void observar(){
+        System.out.println("render view..");
+        viewProduto = false;
+        sugereProduto(selectedProduto);
+    }
 
     public String getPegaDataAtual() {
         Date hoje = new Date();
@@ -199,9 +198,11 @@ public class IndexController implements Serializable {
     }
 
     public String showItem() {
-
+        viewProduto = false;
+        
         Produto p = new Produto(selectedEvent.getId(), selectedEvent.getNome(), selectedEvent.getPreco(), selectedEvent.getCodigo(), selectedEvent.getIdmarca());
-        runProduto(p);
+        //runProduto(p);
+        sugereProduto(p);
 
         return "show";
     }
@@ -287,11 +288,6 @@ public class IndexController implements Serializable {
 
     public void runProduto(Produto p) {
 
-        Configuration configuration = new Configuration();
-        configuration.addEventTypeAutoName("br.com.senac.entity");
-
-        EPServiceProvider engine = EPServiceProviderManager.getDefaultProvider(configuration);
-
         String query = "select * from Produto "
                 + "match_recognize ( "
                 + "       measures A as total "
@@ -299,10 +295,10 @@ public class IndexController implements Serializable {
                 + "       define "
                 + "             A as A.idmarca.getId() = 1 and A.preco > 2000 ) ";
 
-        EPStatement stmt = engine.getEPAdministrator().createEPL(query);
+        EPStatement stmt = service.getEpService().getEPAdministrator().createEPL(query);
         stmt.setSubscriber(new ObserverProduto());
 
-        engine.getEPRuntime().sendEvent(p);
+        service.getEpService().getEPRuntime().sendEvent(p);
     }
 
     public void runUsuario(Usuario u) {
@@ -325,6 +321,15 @@ public class IndexController implements Serializable {
         stmt.setSubscriber(new ObserverUsuario());
 
         engine.getEPRuntime().sendEvent(u);
+    }
+    
+    public void sugereProduto(Produto p){
+        
+        if(!service.getStatus()){
+            service.init();
+            service.setStatus(Boolean.TRUE);
+        }
+        service.getEpService().getEPRuntime().sendEvent(p);
     }
 
     public String meuCarrinho() {
@@ -516,6 +521,15 @@ public class IndexController implements Serializable {
         return showEventoProduto;
     }
 
+    public boolean isViewProduto() {
+        return viewProduto;
+    }
+
+    public void setViewProduto(boolean viewProduto) {
+        this.viewProduto = viewProduto;
+    }
+
+    
     public void cancelar() {
         showEventoProduto = false;
     }
@@ -560,6 +574,14 @@ public class IndexController implements Serializable {
         this.tituloPagina = tituloPagina;
     }
 
+    public ServicoEventoController getService() {
+        return service;
+    }
+
+    public void setService(ServicoEventoController service) {
+        this.service = service;
+    }
+
     public class Observer {
 
         public void update(LoginEvent event) {
@@ -571,8 +593,6 @@ public class IndexController implements Serializable {
 
         public void update(Map<String, Produto> eventMap) {
             Produto total = (Produto) eventMap.get("total");
-
-            System.out.println("a marca sansung foi clicada: " + total.getCodigo());
             IndexController.showEventoProduto = true;
         }
     }

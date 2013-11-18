@@ -3,37 +3,40 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:payament="http://java.sun.com/jsf/composite/slots"
+                xmlns:indicador="http://java.sun.com/jsf/composite/slots"
                 xmlns:mv="http://java.sun.com/jsf/composite/slots"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:pretty="http://ocpsoft.com/prettyfaces"
                 xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="title">Ecommerce - CEP</ui:define>
+
     <ui:define name="content">
+        
         <h:form prependId="false" id="frmAlerta" styleClass="formlogout">
-        <h:panelGroup id="showAlerta" rendered="#{indexController.alerta}">
-            <div class="bootbox modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
-              
-                <div class="modal-body">
-                    <p>Eu sou uma ação baseada em eventos. Você clicou em um produto que está com valor acima de 2000 reais e é da marca Brastemp.</p>
-                    <p>Eu poderia aproveitar isso para monitorar ações ou habilitar outros recursos.</p>
-                </div>
-                <div class="modal-footer">
-                    
-                        
-                    <p:commandLink styleClass="btn btn-primary" update="frmAlerta" actionListener="#{indexController.cancelar}" >
+            <h:panelGroup id="showAlerta" rendered="#{indexController.alerta}">
+                <div class="bootbox modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+
+                    <div class="modal-body">
+                        <p>Eu sou uma ação baseada em eventos. Você clicou em um produto que está com valor acima de 2000 reais e é da marca Brastemp.</p>
+                        <p>Eu poderia aproveitar isso para monitorar ações ou habilitar outros recursos.</p>
+                    </div>
+                    <div class="modal-footer">
+
+
+                        <p:commandLink styleClass="btn btn-primary" update="frmAlerta" actionListener="#{indexController.cancelar}" >
                             OK
-                            
+
                         </p:commandLink>
-                    
+
+                    </div>
                 </div>
-            </div>
-            <div class="modal-backdrop fade in"></div>
+                <div class="modal-backdrop fade in"></div>
             </h:panelGroup>
-            </h:form>
+        </h:form>
         <article>
             <div class="container-fluid" id="content">
 
-               <mv:menuVertical/>
+                <mv:menuVertical/>
 
 
                 <div id="main" style="margin-left: 200px">
@@ -52,8 +55,17 @@
                                     <li class='red'>
                                         <a href="#"><i class="icon-cogs"></i></a>
                                     </li>
-                                    <li class='lime'>
-                                        <a href="#"><i class="icon-globe"></i></a>
+                                    
+                                    <li class='lime' style="display: #{(indexController.viewProduto) ? 'block': 'none'}">
+                                        <a href="#"><i class="icon-globe"></i>
+                                            <div class="popStyle">
+                                                <div class="arrow"></div>
+                                                <h3 class="popover-title">Atenção</h3>
+                                                <div class="popover-content">
+                                                    Você viu este item a menos de 1 mim. Tem alguma dúvida sobre ele?
+                                                </div>
+                                            </div>
+                                        </a>
                                     </li>
                                 </ul>
                                 <ul class="stats">
@@ -68,26 +80,13 @@
                                                     </pretty:link>
                                                 </h:panelGroup>
                                                 <h:panelGroup rendered="#{(indexController.contaCarrinho == 0 and session.getAttribute('usuariologado'))}">
-                                                        <h:outputText value="#{indexController.contaCarrinho}" />
+                                                    <h:outputText value="#{indexController.contaCarrinho}" />
                                                 </h:panelGroup>
                                             </span>
                                             <span>Meu Carrinho</span>
                                         </div>
                                     </li>
-                                    <li class='green'>
-                                        <i class="icon-money"></i>
-                                        <div class="details">
-                                            <span class="big">R$ 2,12</span>
-                                            <span>Dollar</span>
-                                        </div>
-                                    </li>
-                                    <li class='orange'>
-                                        <i class="icon-calendar"></i>
-                                        <div class="details">
-                                            <span class="big">Set 02, 2013</span>
-                                            <span>Segunda, 13:56</span>
-                                        </div>
-                                    </li>
+                                    <indicador:indicadores/>
                                 </ul>
                             </div>
                         </div>
@@ -142,14 +141,14 @@
                                                     </p>
                                                 </div>
                                                 <div class="precoproduto">
-                                                    <i>Valor:</i> <span>R$ <h:outputText id="preco" value="#{item.preco}">
+                                                    <i>Valor:</i> <span>R$ <h:outputText id="preco"  value="#{item.preco}">
                                                             <f:convertNumber for="preco" minFractionDigits="2" />
                                                         </h:outputText> </span>
                                                 </div>
 
                                                 <div class="carrinhoproduto">
-                                                    
-                                                        
+
+
                                                     <h:commandLink action="#{indexController.meuCarrinho}"  styleClass="btn btn-large btn-success">
                                                         <span class="icon-shopping-cart"></span> comprar
                                                         <f:param name="itemCarrinho" value="#{item.id}" />

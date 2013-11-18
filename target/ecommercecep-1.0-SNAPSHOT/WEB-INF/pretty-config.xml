@@ -25,6 +25,12 @@
 		<view-id value="/faces/pages/carrinho.xhtml" />
 	</url-mapping>
         
+        <url-mapping id="compra">
+		<pattern value="/fechar-compra" />
+		<view-id value="/faces/pages/compra.xhtml" />
+	</url-mapping>
+        
+        
 	<url-mapping id="sistema">
 		<pattern value="/homepage" />
 		<view-id value="/faces/sistema/home.xhtml" />

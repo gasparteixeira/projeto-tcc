@@ -1168,11 +1168,22 @@ div.DTS div.dataTables_scrollBody { z-index: 2 }
 .login .wrapper .login-body .forget a { background: #eee;padding:10px 0;text-align:center;display:block;text-decoration:none;color:#555 }
 .login .wrapper .login-body .forget a:hover { background: #ddd }
 .login .wrapper .login-body .forget a span { line-height: 30px;margin-bottom:10px;position:relative }
-.minitiles { float: left;margin:0;padding:0;list-style-type:none }
-.minitiles li { float: left;margin-right:15px }
+.minitiles { float: left;margin:0;padding:0;list-style-type:none;  }
+.minitiles li { float: left;margin-right:15px;position: relative }
 .minitiles li a { display: block;height:61px;width:61px;color:#fff;text-decoration:none;position:relative;text-align:center }
 .minitiles li a i { font-size: 36px;line-height:61px }
 .minitiles li a:hover:before { content: '';position:absolute;left:0;top:0;width:55px;height:55px;background:none;pointer-events:none;border:3px solid rgba(0,0,0,0.5);z-index:99 }
+.popStyle { position: absolute; z-index: 100; width: 194px; bottom: -121px; background-clip: padding-box; background-color: #f0f0f0; border: 1px solid #ccc;color:#f00;text-align: left}
+
+.popStyle .arrow {
+    background: url("#{resource['/images/seta_top_pop.png']}") no-repeat;
+    width: 19px;
+    height: 11px;
+    position: absolute;
+    top: -11px;
+    left: 20px;
+    z-index: 102;
+}
 body.error { background: #368ee0 }
 body.error .wrapper { width: 300px;height:230px;position:absolute;top:50%;left:50%;margin:-165px -150px }
 body.error .wrapper .code { color: #fff;font-size:90px;text-align:center }
@@ -1239,3 +1250,7 @@ footer span { padding-right: 60px }
 .modal-footer { padding: 0}
 .modal-header { padding: 0 15px; color: #368EE0}
 .subtitulo { font-size: 10px; line-height: 12px; font-style: italic}
+.formapagamentotable tr{ border:1px solid white;}
+.formapagamentotable table { width: 290px}
+.formapagamentotable table label { float: left; margin-left:  10px;}
+.formapagamentotable table input { float: left}

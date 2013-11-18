@@ -11,6 +11,6 @@
 
 	<bean id="eventGenerator"
 		class="br.com.senac.event.util.RandomPedidoEventGenerator" />
-
+        
 
 </beans>
