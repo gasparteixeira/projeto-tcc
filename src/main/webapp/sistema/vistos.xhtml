@@ -20,18 +20,19 @@
                                 <div class="box-title">
                                     <h3>
                                         <span class="iconTableHeadding"></span>
-                                        Monitoramento de Produtos
+                                        Produtos Mais Visitados
 
                                     </h3>
                                 </div>
                                 <div class="box-content nopadding">
                                     <h:form styleClass="form-horizontal form-bordered" id="form">
-                                        <p:poll interval="1" listener="#{indexController.monitoraProduto}" update="public" oncomplete="scrolling();" />  
+                                       
+                                        <p:poll interval="1" listener="#{indexController.monitoraVisualizcao}" update="public" oncomplete="scrolling();" />  
 
                                         <h:panelGroup layout="block" id="messages" class="listaMonitor">
 
-                                            <p:outputPanel id="public" layout="block" style="height: 400px; padding: 10px; margin: 20px; overflow-y: auto" styleClass="display ui-corner-all ui-widget-content chatlogs"> 
-                                                <h:outputText id="mensagem" escape="false" value="#{indexController.monitorProduto}"/>
+                                            <p:outputPanel id="public" layout="block" style="height: 400px; padding: 10px; margin: 20px; overflow-y: auto" styleClass="display ui-corner-all ui-widget-content chatlogs">
+                                                <h:outputText id="mensagem" escape="false" value="#{indexController.monitorVisualizacao}"/>
                                             </p:outputPanel>
                                         </h:panelGroup>
                                     </h:form>

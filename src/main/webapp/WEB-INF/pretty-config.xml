@@ -41,6 +41,11 @@
 		<view-id value="/faces/sistema/monitor.xhtml" />
 	</url-mapping>
         
+	<url-mapping id="visita">
+		<pattern value="/monitor-mais-vistos" />
+		<view-id value="/faces/sistema/vistos.xhtml" />
+	</url-mapping>
+        
 	<url-mapping id="usuario">
 		<pattern value="/usuarioList" />
 		<view-id value="/faces/sistema/backend/usuario/List.xhtml" />

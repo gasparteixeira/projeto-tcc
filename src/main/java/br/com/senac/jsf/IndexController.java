@@ -16,10 +16,6 @@ import br.com.senac.mb.GaleriaFacade;
 import br.com.senac.mb.MarcaFacade;
 import br.com.senac.mb.ProdutoFacade;
 import br.com.senac.mb.UsuarioFacade;
-import com.espertech.esper.client.Configuration;
-import com.espertech.esper.client.EPServiceProvider;
-import com.espertech.esper.client.EPServiceProviderManager;
-import com.espertech.esper.client.EPStatement;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -27,12 +23,11 @@ import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.ejb.EJB;
@@ -86,6 +81,7 @@ public class IndexController implements Serializable {
     private String tituloPagina;
     public static boolean viewProduto = false;
     public static StringBuilder monitorProduto = new StringBuilder();
+    public static StringBuilder monitorVisualizacao = new StringBuilder();
     public static List<Produto> maisVistos = new ArrayList<Produto>();
     @EJB
     private ServicoEventoController service;
@@ -169,7 +165,11 @@ public class IndexController implements Serializable {
     }
     
     public void monitoraProduto(){
-        System.out.println("monitorando "+ monitorProduto.toString());
+        
+    }
+    
+    public void monitoraVisualizcao(){
+        System.out.println("passei."+maisVistos.toString());
     }
 
     public String removerItem() {
@@ -197,19 +197,6 @@ public class IndexController implements Serializable {
 
     public String getDolarCotacao() {
         String valor = "2,18";
-        /*try {
-         URL url = new URL("http://dolarhoje.com/cotacao.txt");
-         InputStream is = url.openStream();
-
-         BufferedReader br = new BufferedReader(new InputStreamReader(is));
-         while ((valor = br.readLine()) != null) {
-
-         }
-         } catch (MalformedURLException ex) {
-         Logger.getLogger(IndexController.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (IOException ex) {
-         Logger.getLogger(IndexController.class.getName()).log(Level.SEVERE, null, ex);
-         }*/
         return valor;
     }
 
@@ -591,13 +578,47 @@ public class IndexController implements Serializable {
         IndexController.monitorProduto = monitorProduto;
     }
 
+    public  StringBuilder getMonitorVisualizacao() {
+        return monitorVisualizacao;
+    }
+
+    public  void setMonitorVisualizacao(StringBuilder monitorVisualizacao) {
+        IndexController.monitorVisualizacao = monitorVisualizacao;
+    }
+    
+    
+
     public  List<Produto> getMaisVistos() {
         List<Produto> auxiliar = new ArrayList<Produto>();
         List<Produto> noDuplicate = new ArrayList<Produto>();
+        monitorVisualizacao.delete(0, monitorVisualizacao.length());
         
-        LinkedHashSet<Produto> set = new LinkedHashSet<Produto>(maisVistos);
-        noDuplicate.clear();
-        noDuplicate.addAll(set);
+        Map<Produto, Integer> map = new HashMap<Produto, Integer>();
+        for(Produto temp: maisVistos){
+            Integer count = map.get(temp);
+            map.put(temp, (count == null) ? 1 : count + 1);
+        }
+        
+        List<Map.Entry> a = new ArrayList<Map.Entry>(map.entrySet());
+        
+        Collections.sort(a,
+         new Comparator() {
+             public int compare(Object o1, Object o2) {
+                 Map.Entry e1 = (Map.Entry) o1;
+                 Map.Entry e2 = (Map.Entry) o2;
+                 return ((Comparable) e2.getValue()).compareTo(e1.getValue());
+             }
+         });
+
+       
+        for (Map.Entry e : a) {
+            noDuplicate.add((Produto) e.getKey());
+            Produto p = (Produto)e.getKey();
+            monitorVisualizacao.append("<span class='normal'>").append("Produto: ").append(p.getNome()).append(", R$= ").append(p.getPreco())
+                    .append(", (").append(Integer.valueOf(e.getValue().toString())/2).append(") ").append(" vez(es) visto.").append("</span>");
+        }
+        
+
         for(Produto v:noDuplicate ){
             for(Produto p: listaProdutos){
                 if(p.getId() == v.getId()){
