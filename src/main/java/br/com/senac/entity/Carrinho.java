@@ -38,9 +38,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Carrinho.findAll", query = "SELECT c FROM Carrinho c"),
     @NamedQuery(name = "Carrinho.findById", query = "SELECT c FROM Carrinho c WHERE c.id = :id"),
-    @NamedQuery(name = "Carrinho.findByUserId", query = "SELECT c FROM Carrinho c WHERE c.idusuario = :idusuario"),
+    @NamedQuery(name = "Carrinho.findByUserId", query = "SELECT c FROM Carrinho c WHERE c.idusuario = :idusuario AND c.datafechamento is null"),
     @NamedQuery(name = "Carrinho.findByQuantidade", query = "SELECT c FROM Carrinho c WHERE c.quantidade = :quantidade"),
     @NamedQuery(name = "Carrinho.findByValor", query = "SELECT c FROM Carrinho c WHERE c.valor = :valor"),
+    @NamedQuery(name = "Carrinho.updateByUserId", query = "UPDATE Carrinho c SET c.datafechamento = :datafechamento  WHERE c.idusuario = :idusuario"),
     @NamedQuery(name = "Carrinho.findByDatacadastro", query = "SELECT c FROM Carrinho c WHERE c.datacadastro = :datacadastro"),
     @NamedQuery(name = "Carrinho.findByDatafechamento", query = "SELECT c FROM Carrinho c WHERE c.datafechamento = :datafechamento")})
 public class Carrinho implements Serializable {

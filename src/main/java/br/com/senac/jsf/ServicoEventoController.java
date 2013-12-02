@@ -4,6 +4,7 @@
  */
 package br.com.senac.jsf;
 
+import br.com.senac.event.subscriber.StatementSubscriber;
 import com.espertech.esper.client.Configuration;
 import com.espertech.esper.client.EPServiceProvider;
 import com.espertech.esper.client.EPServiceProviderManager;
@@ -23,32 +24,55 @@ import org.slf4j.LoggerFactory;
 @ConcurrencyManagement(CONTAINER)
 @Stateless
 public class ServicoEventoController {
+
     private static Logger LOG = LoggerFactory.getLogger(ServicoEventoController.class);
     private EPServiceProvider epService;
-    
     private EPStatement produtoEventStatement;
+    //produtos
     private ProdutoEventSubscriber produtoEventSubscriber = new ProdutoEventSubscriber();
     private ProdutoInsertSubscriber produtoInsertSubscriber = new ProdutoInsertSubscriber();
+    private ProdutoValorSubscriber produtoValorSubscriber = new ProdutoValorSubscriber();
+    private ProdutoEventMonitorSubscriber produtoEventMonitorSubscriber = new ProdutoEventMonitorSubscriber();
+    //cartao - fraude
+    private CartaoEventSubscriber cartaoEventSubscriber = new CartaoEventSubscriber();
+    private CartaoInsertSubscriber cartaoInsertSubscriber = new CartaoInsertSubscriber();
+    //Login - auxilio
+    private LoginEventSubscriber loginEventSubscriber = new LoginEventSubscriber();
+    private LoginInsertSubscriber loginInsertSubscriber = new LoginInsertSubscriber();
     private Boolean status = false;
-    
-    public ServicoEventoController(){
+
+    public ServicoEventoController() {
         Configuration config = new Configuration();
         config.addEventTypeAutoName("br.com.senac.entity");
         epService = EPServiceProviderManager.getDefaultProvider(config);
-        System.out.println("criei o servico...");
     }
 
-    public void init(){
+    public void init() {
         createProdutoObserver();
     }
-    
-    public void createProdutoObserver(){
-        // inserindo na janela
-        produtoEventStatement = epService.getEPAdministrator().createEPL(produtoInsertSubscriber.getStatement());
-        produtoEventStatement.setSubscriber(produtoInsertSubscriber);
-        // lendo eventos
-        produtoEventStatement = epService.getEPAdministrator().createEPL(produtoEventSubscriber.getStatement());
-        produtoEventStatement.setSubscriber(produtoEventSubscriber);
+
+    public void createProdutoObserver() {
+
+        //Eventos para monitorar produtos
+        preparaConsulta(produtoInsertSubscriber);
+        preparaConsulta(produtoEventSubscriber);
+        preparaConsulta(produtoValorSubscriber);
+        preparaConsulta(produtoEventMonitorSubscriber);
+
+        // Eventos para fraude cartao
+        preparaConsulta(cartaoInsertSubscriber);
+        preparaConsulta(cartaoEventSubscriber);
+        
+        // Eventos para monitorar login
+        preparaConsulta(loginInsertSubscriber);
+        preparaConsulta(loginEventSubscriber);
+
+    }
+
+    public void preparaConsulta(StatementSubscriber stSub) {
+        produtoEventStatement = epService.getEPAdministrator().createEPL(stSub.getStatement());
+        produtoEventStatement.setSubscriber(stSub);
+        LOG.debug("Criei statement com a class "+stSub.getClass().getSimpleName());
     }
 
     public EPServiceProvider getEpService() {
@@ -66,7 +90,4 @@ public class ServicoEventoController {
     public void setStatus(Boolean status) {
         this.status = status;
     }
-
-  
-    
 }

@@ -6,6 +6,8 @@ package br.com.senac.jsf;
 
 import br.com.senac.entity.Carrinho;
 import br.com.senac.entity.Cartao;
+import br.com.senac.entity.Compra;
+import br.com.senac.entity.Endereco;
 import br.com.senac.entity.Formapagamento;
 import br.com.senac.entity.Usuario;
 import br.com.senac.mb.CarrinhoFacade;
@@ -19,6 +21,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,9 +56,11 @@ public class FechamentoController implements Serializable {
     private Formapagamento selectedForma;
     private String formaPagar = "1";
     private Cartao cartaoCredito = new Cartao();
+    public static boolean viewCartao = false;
     private Carrinho car;
     private Usuario usuarioSelected;
-    private EPServiceProvider epService;
+    @EJB
+    private ServicoEventoController service;
 
     public FechamentoController() {
     }
@@ -75,16 +80,59 @@ public class FechamentoController implements Serializable {
         u.setId(Integer.valueOf(req.getSession().getAttribute("usuarioId").toString()));
         map.put("idusuario", u);
         listcar = carrinhoFacade.findWithNamedQuery("Carrinho.findByUserId", map, 0);
-        BigDecimal soma   = new BigDecimal(0);
-        for(Carrinho c: listcar){
+        BigDecimal soma = new BigDecimal(0);
+        for (Carrinho c : listcar) {
             soma = soma.add(c.getValor());
         }
         return soma;
     }
 
-    public String pagar() {
+    public String pagar() throws IOException {
 
+        Cartao c = new Cartao(cartaoCredito.getNumero());
+        testeFraude(c);
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest req = (HttpServletRequest) context.getExternalContext().getRequest();
+        HttpServletResponse res = (HttpServletResponse) context.getExternalContext().getResponse();
+
+        Formapagamento forma = new Formapagamento();
+        forma.setId(Integer.valueOf(this.getFormaPagar()));
+
+        Endereco endereco = new Endereco();
+        endereco.setId(1);
+
+        Compra compra = new Compra();
+        compra.setCartao(cartaoCredito.getNumero().replaceAll(" ", ""));
+        compra.setCodigo("123");
+        compra.setDatacadastro(new Date());
+        compra.setValor(this.getValor());
+        compra.setIdformapagamento(forma);
+        compra.setIdendereco(endereco);
+        try {
+            compraFacade.create(compra);
+
+            Map map = new HashMap();
+            Usuario u = new Usuario();
+            u.setId(Integer.valueOf(req.getSession().getAttribute("usuarioId").toString()));
+            map.put("idusuario", u);
+            map.put("datafechamento", new Date());
+            int val = carrinhoFacade.updateWithNamedQuery("Carrinho.updateByUserId", map, 0);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Compra processada logo estaremos enviando a confirmação do pedido.", null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Não foi possível realizar a compra.", null));
+        }
         return null;
+    }
+
+    public void testeFraude(Cartao c) {
+        viewCartao = false;
+        if (!service.getStatus()) {
+            service.init();
+            service.setStatus(Boolean.TRUE);
+        }
+        service.getEpService().getEPRuntime().sendEvent(c);
     }
 
     public ProdutoFacade getProdutoFacade() {
@@ -167,6 +215,14 @@ public class FechamentoController implements Serializable {
         this.car = car;
     }
 
+    public boolean isViewCartao() {
+        return viewCartao;
+    }
+
+    public void setViewCartao(boolean viewCartao) {
+        FechamentoController.viewCartao = viewCartao;
+    }
+
     public void validateCartao(FacesContext context, UIComponent component, Object value) {
 
         String cardNumber = value.toString().replace(" ", "").replace("-", "");
@@ -190,7 +246,7 @@ public class FechamentoController implements Serializable {
         }
         int modulus = sum % 10;
         if (modulus != 0) {
-             FacesMessage message = new FacesMessage();
+            FacesMessage message = new FacesMessage();
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             message.setDetail("Cartão inválido.");
             context.addMessage("frmCompra:cartao", message);

@@ -54,6 +54,18 @@ public abstract class AbstractFacade<T> {
         }
         return query.getResultList();
     }
+    
+    public int updateWithNamedQuery(java.lang.String namedQueryName, java.util.Map parameters, int resultLimit){
+        Set<Map.Entry<String, Object>> rawParameters = parameters.entrySet();
+        Query query = this.em.createNamedQuery(namedQueryName);
+        if (resultLimit > 0) {
+            query.setMaxResults(resultLimit);
+        }
+        for (Map.Entry<String, Object> entry : rawParameters) {
+            query.setParameter(entry.getKey(), entry.getValue());
+        }
+        return query.executeUpdate();
+    }
 
     public List<T> findAll() {
         javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();

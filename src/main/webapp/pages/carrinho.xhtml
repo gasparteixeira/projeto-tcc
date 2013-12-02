@@ -29,9 +29,7 @@
                                     <!--<li class='teal'>
                                         <a href="#"><i class="icon-inbox"></i></a>
                                     </li>-->
-                                    <li class='red'>
-                                        <a href="#"><i class="icon-cogs"></i></a>
-                                    </li>
+                                    
                                     <li class='lime'>
                                         <a href="#"><i class="icon-globe"></i></a>
                                     </li>
@@ -48,7 +46,7 @@
                                                     </pretty:link>
                                                 </h:panelGroup>
                                                 <h:panelGroup rendered="#{(indexController.contaCarrinho == 0 and session.getAttribute('usuariologado'))}">
-                                                        <h:outputText value="#{indexController.contaCarrinho}" />
+                                                    <h:outputText value="#{indexController.contaCarrinho}" />
                                                 </h:panelGroup>
                                             </span>
                                             <span>Meu Carrinho</span>
@@ -121,9 +119,9 @@
                                                 R$ <h:outputText  value="0.0" >
                                                     <f:convertNumber  minFractionDigits="2" />
                                                 </h:outputText>
-                                                
+
                                             </h:column>
-                                            
+
                                             <h:column headerClass="center">
                                                 <f:facet name="header">
                                                     <h:outputText value="Total" />
@@ -132,23 +130,38 @@
                                                     <f:convertNumber  minFractionDigits="2" />
                                                 </h:outputText>
                                             </h:column>
+                                            <h:column headerClass="center">
+                                                <f:facet name="header">
+                                                    <h:outputText value="Remover"/>
+                                                </f:facet>
+                                                <h:commandLink value="[x]" onclick="if (! confirm('Tem certeza que deseja remover o ítem?')) return false" action="#{indexController.removerItem}">
+                                                    <f:setPropertyActionListener target="#{indexController.selectItemRemove}" value="#{car}" />
+                                                </h:commandLink>
+                                            </h:column>
                                             <f:facet name="footer" class="left">
-                                                
+                                                <div class="total">
+                                                    Total Compras R$ <span class="valorCarro">
+                                                        <h:outputText value="#{fechamentoController.valor}">
+                                                            <f:convertNumber  minFractionDigits="2" />
+                                                        </h:outputText>
+                                                    </span>
+                                                </div>
+
                                                 <h:commandLink action="pretty:home" styleClass="btn btn-small">
                                                     <span class="iconNew"></span>Contiuar Comprando
                                                 </h:commandLink>
-                                                
+
                                                 <h:commandLink action="pretty:compra" styleClass="btn btn-small">
                                                     <i class="icon-money"></i> Fechar compra
                                                 </h:commandLink>
-                                                    
+
                                             </f:facet>
 
                                         </h:dataTable>
                                         <h:outputText rendered="#{empty indexController.listaCarrinho}" value="Não há compras para este usuário." />
                                     </h:form>
-                                    
-                                    
+
+
                                 </div>
                             </div>
                         </div>

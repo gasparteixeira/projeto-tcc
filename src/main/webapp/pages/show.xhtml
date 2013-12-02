@@ -11,7 +11,7 @@
     <ui:define name="title">Ecommerce - CEP</ui:define>
 
     <ui:define name="content">
-        
+
         <h:form prependId="false" id="frmAlerta" styleClass="formlogout">
             <h:panelGroup id="showAlerta" rendered="#{indexController.alerta}">
                 <div class="bootbox modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
@@ -51,11 +51,11 @@
                                 <ul class="minitiles">
                                     <!--<li class='teal'>
                                         <a href="#"><i class="icon-inbox"></i></a>
-                                    </li>-->
+                                    </li>
                                     <li class='red'>
                                         <a href="#"><i class="icon-cogs"></i></a>
-                                    </li>
-                                    
+                                    </li>-->
+
                                     <li class='lime' style="display: #{(indexController.viewProduto) ? 'block': 'none'}">
                                         <a href="#"><i class="icon-globe"></i>
                                             <div class="popStyle">
@@ -156,6 +156,30 @@
                                                 </div>
                                             </h:column>
                                         </h:panelGrid>
+                                    </h:form>
+                                </div>
+                                <div class="box-title">
+                                    <h4>
+                                        <i class="icon-quote-left"></i>
+                                        <h:outputText value=" Produtos mais vistos no site"/>
+                                    </h4>
+                                    <h:form prependId="false">
+                                        <h:panelGroup id="produtos">
+                                            <ul>
+                                                <ui:repeat value="#{indexController.maisVistos}"  var="p">
+                                                    <li>
+                                                        <div class="foto">
+                                                            <h:graphicImage library="images" name="produtos/#{p.galeriaList[0].imagem}" rendered="#{not empty p.galeriaList[0].imagem}" />
+                                                        </div>
+                                                        <div class="info">
+                                                            <span class="nome"><h:outputText value="#{p.nome}" /></span>
+                                                            <span class="marca"><h:outputText value="#{p.idmarca.nome}" /></span> 
+
+                                                        </div>
+                                                    </li>
+                                                </ui:repeat>
+                                            </ul>
+                                        </h:panelGroup>
                                     </h:form>
                                 </div>
                             </div>

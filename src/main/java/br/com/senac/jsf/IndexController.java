@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -9,7 +9,7 @@ import br.com.senac.entity.Categoria;
 import br.com.senac.entity.Marca;
 import br.com.senac.entity.Produto;
 import br.com.senac.entity.Usuario;
-import br.com.senac.event.event.LoginEvent;
+import br.com.senac.entity.LoginEvent;
 import br.com.senac.mb.CarrinhoFacade;
 import br.com.senac.mb.CategoriaFacade;
 import br.com.senac.mb.GaleriaFacade;
@@ -26,10 +26,13 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.ejb.EJB;
@@ -60,6 +63,7 @@ public class IndexController implements Serializable {
     private Produto selectedProduto;
     private Produto selectedCarrinho;
     private Produto selectedEvent;
+    private Carrinho selectItemRemove;
     private Integer quantidade = 1;
     private BigDecimal total;
     @EJB
@@ -80,10 +84,13 @@ public class IndexController implements Serializable {
     private String nomeProduto;
     private List<Produto> listaProdutos = new ArrayList<Produto>();
     private String tituloPagina;
-    public  static boolean viewProduto = false;
+    public static boolean viewProduto = false;
+    public static StringBuilder monitorProduto = new StringBuilder();
+    public static List<Produto> maisVistos = new ArrayList<Produto>();
     @EJB
     private ServicoEventoController service;
     
+
     public IndexController() {
         pattern = Pattern.compile(PASSWORD_PATTERN);
         tituloPagina = "Todos os produtos";
@@ -161,8 +168,17 @@ public class IndexController implements Serializable {
         return null;
     }
     
-    public void observar(){
-        System.out.println("render view..");
+    public void monitoraProduto(){
+        System.out.println("monitorando "+ monitorProduto.toString());
+    }
+
+    public String removerItem() {
+
+        carrinhoFacade.remove(selectItemRemove);
+        return null;
+    }
+
+    public void observar() {
         viewProduto = false;
         sugereProduto(selectedProduto);
     }
@@ -182,26 +198,26 @@ public class IndexController implements Serializable {
     public String getDolarCotacao() {
         String valor = "2,18";
         /*try {
-            URL url = new URL("http://dolarhoje.com/cotacao.txt");
-            InputStream is = url.openStream();
+         URL url = new URL("http://dolarhoje.com/cotacao.txt");
+         InputStream is = url.openStream();
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            while ((valor = br.readLine()) != null) {
+         BufferedReader br = new BufferedReader(new InputStreamReader(is));
+         while ((valor = br.readLine()) != null) {
 
-            }
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(IndexController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(IndexController.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+         }
+         } catch (MalformedURLException ex) {
+         Logger.getLogger(IndexController.class.getName()).log(Level.SEVERE, null, ex);
+         } catch (IOException ex) {
+         Logger.getLogger(IndexController.class.getName()).log(Level.SEVERE, null, ex);
+         }*/
         return valor;
     }
 
     public String showItem() {
         viewProduto = false;
-        
+
         Produto p = new Produto(selectedEvent.getId(), selectedEvent.getNome(), selectedEvent.getPreco(), selectedEvent.getCodigo(), selectedEvent.getIdmarca());
-        //runProduto(p);
+        controlaValorProduto(p);
         sugereProduto(p);
 
         return "show";
@@ -217,20 +233,10 @@ public class IndexController implements Serializable {
         map.put("email", parameterMap.get("email").toString());
         map.put("senha", parameterMap.get("senha").toString());
 
-        Usuario us = new Usuario(parameterMap.get("email").toString(), parameterMap.get("senha").toString());
+        LoginEvent le = new LoginEvent(parameterMap.get("email").toString(), parameterMap.get("senha").toString());
 
-        runUsuario(us);
+        observaErroSenha(le);
 
-        matcher = pattern.matcher(parameterMap.get("senha").toString());
-        if (!matcher.matches()) {
-            FacesMessage message = new FacesMessage();
-            message.setSeverity(FacesMessage.SEVERITY_ERROR);
-            message.setSummary("Usuário e ou senha inválidos.");
-
-            context.addMessage(null, message);
-
-            return null;
-        }
         try {
             List<Usuario> user = usuarioFacade.findWithNamedQuery("Usuario.findByLogin", map, 0);
             if (user.size() > 0) {
@@ -263,69 +269,36 @@ public class IndexController implements Serializable {
                 return "pretty:home";
             } else {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuário ou senha inválido.", null));
-                return "pretty:login";
+                return null;
             }
         } catch (EJBException e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERRO: Não foi possivel fazer a consulta! Tente novamente.", null));
-            return "pretty:login";
+            return null;
         }
     }
 
-    public void run(LoginEvent e) {
+    public void controlaValorProduto(Produto p) {
 
-        Configuration configuration = new Configuration();
-        configuration.addEventType("LoginEvent", LoginEvent.class);
-
-        EPServiceProvider engine = EPServiceProviderManager.getDefaultProvider(configuration);
-
-        String query = "select * from LoginEvent(email = 'gaspar.teixeira@gmail.com').win:time_batch(30)";
-
-        EPStatement stmt = engine.getEPAdministrator().createEPL(query);
-        stmt.setSubscriber(new Observer());
-
-        engine.getEPRuntime().sendEvent(e);
-    }
-
-    public void runProduto(Produto p) {
-
-        String query = "select * from Produto "
-                + "match_recognize ( "
-                + "       measures A as total "
-                + "       pattern (A) "
-                + "       define "
-                + "             A as A.idmarca.getId() = 1 and A.preco > 2000 ) ";
-
-        EPStatement stmt = service.getEpService().getEPAdministrator().createEPL(query);
-        stmt.setSubscriber(new ObserverProduto());
-
+        if (!service.getStatus()) {
+            service.init();
+            service.setStatus(Boolean.TRUE);
+        }
         service.getEpService().getEPRuntime().sendEvent(p);
+
     }
 
-    public void runUsuario(Usuario u) {
+    public void observaErroSenha(LoginEvent u) {
 
-        Configuration configuration = new Configuration();
-        configuration.addEventTypeAutoName("br.com.senac.entity");
-
-        EPServiceProvider engine = EPServiceProviderManager.getDefaultProvider(configuration);
-
-        String query = "select * from Usuario "
-                + "match_recognize ( "
-                + "       measures A as total, B as total1, C as total2  "
-                + "       pattern (A B C) "
-                + "       define "
-                + "             A as A.senha != '' and A.email != '', "
-                + "             B as B.senha = A.senha and B.email = A.email, "
-                + "             C as C.senha = A.senha and C.email = A.email ) ";
-
-        EPStatement stmt = engine.getEPAdministrator().createEPL(query);
-        stmt.setSubscriber(new ObserverUsuario());
-
-        engine.getEPRuntime().sendEvent(u);
+        if (!service.getStatus()) {
+            service.init();
+            service.setStatus(Boolean.TRUE);
+        }
+        service.getEpService().getEPRuntime().sendEvent(u);
     }
-    
-    public void sugereProduto(Produto p){
-        
-        if(!service.getStatus()){
+
+    public void sugereProduto(Produto p) {
+
+        if (!service.getStatus()) {
             service.init();
             service.setStatus(Boolean.TRUE);
         }
@@ -529,7 +502,6 @@ public class IndexController implements Serializable {
         this.viewProduto = viewProduto;
     }
 
-    
     public void cancelar() {
         showEventoProduto = false;
     }
@@ -574,27 +546,20 @@ public class IndexController implements Serializable {
         this.tituloPagina = tituloPagina;
     }
 
+    public Carrinho getSelectItemRemove() {
+        return selectItemRemove;
+    }
+
+    public void setSelectItemRemove(Carrinho selectItemRemove) {
+        this.selectItemRemove = selectItemRemove;
+    }
+
     public ServicoEventoController getService() {
         return service;
     }
 
     public void setService(ServicoEventoController service) {
         this.service = service;
-    }
-
-    public class Observer {
-
-        public void update(LoginEvent event) {
-            System.out.println(event.getEmail());
-        }
-    }
-
-    public class ObserverProduto {
-
-        public void update(Map<String, Produto> eventMap) {
-            Produto total = (Produto) eventMap.get("total");
-            IndexController.showEventoProduto = true;
-        }
     }
     public static Boolean alertaUser = Boolean.FALSE;
     public static String mensagemSenha = "";
@@ -618,14 +583,36 @@ public class IndexController implements Serializable {
         return alertaUser;
     }
 
-    public class ObserverUsuario {
+    public StringBuilder getMonitorProduto() {
+        return monitorProduto;
+    }    
 
-        public void update(Map<String, Usuario> eventMap) {
-
-            Usuario total = (Usuario) eventMap.get("total");
-            mensagemSenha = "<h3><i class='icon-info-sign'></i>Atenção:</h3> Você já tentou 3 vezes a senha '<b>" + total.getSenha() + "</b>' para o e-mail '<b>" + total.getEmail() + "</b>'.<br/>Provavelmente você esqueceu sua senha. <b>Habilitei</b> o link abaixo para a troca de senha.";
-            System.out.println("O ususario total eh " + total.getSenha());
-            alertaUser = Boolean.TRUE;
-        }
+    public void setMonitorProduto(StringBuilder monitorProduto) {
+        IndexController.monitorProduto = monitorProduto;
     }
+
+    public  List<Produto> getMaisVistos() {
+        List<Produto> auxiliar = new ArrayList<Produto>();
+        List<Produto> noDuplicate = new ArrayList<Produto>();
+        
+        LinkedHashSet<Produto> set = new LinkedHashSet<Produto>(maisVistos);
+        noDuplicate.clear();
+        noDuplicate.addAll(set);
+        for(Produto v:noDuplicate ){
+            for(Produto p: listaProdutos){
+                if(p.getId() == v.getId()){
+                    if(!auxiliar.contains(p) && auxiliar.size() < 4){
+                        auxiliar.add(p);
+                    } 
+                }
+            }
+        }
+        
+        return auxiliar;
+    }
+
+    public  void setMaisVistos(List<Produto> maisVistos) {
+        IndexController.maisVistos = maisVistos;
+    }
+
 }

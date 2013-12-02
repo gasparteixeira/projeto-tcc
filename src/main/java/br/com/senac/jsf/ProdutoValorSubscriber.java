@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  * @author Gaspar
  */
 @Component
-public class ProdutoEventSubscriber implements StatementSubscriber{
+public class ProdutoValorSubscriber implements StatementSubscriber{
 
 
    @ManagedProperty(value="#{indexController}")
@@ -24,16 +24,19 @@ public class ProdutoEventSubscriber implements StatementSubscriber{
     @Override
     public String getStatement() {
   
-        String query = "select d.id, d.nome " +
-                       "from Produto as c unidirectional, ProdutoStream.win:time(10 min) as d " +
-                       "where d.id = c.id having count(d.id) >= 2 ";
+        String query = "select * from Produto "
+                + "match_recognize ( "
+                + "       measures A as total "
+                + "       pattern (A) "
+                + "       define "
+                + "             A as A.preco > 2000 ) ";
         return query;
     }
     
     
     public void update(Map<String, Produto> eventMap) {
 
-            IndexController.viewProduto = true;
+            IndexController.showEventoProduto = true;
 
         }
 

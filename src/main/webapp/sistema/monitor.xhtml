@@ -1,0 +1,59 @@
+<ui:composition template="/WEB-INF/templates/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="title">Ecommerce - CEP</ui:define>
+    <ui:define name="content">
+        <article>
+            <div id="main">
+                <div class="container-fluid">
+                    <div class="page-header">
+                        
+                        <div class="pull-right">
+
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <div class="box box-color box-bordered">
+                                <div class="box-title">
+                                    <h3>
+                                        <span class="iconTableHeadding"></span>
+                                        Monitoramento de Produtos
+
+                                    </h3>
+                                </div>
+                                <div class="box-content nopadding">
+                                    <h:form styleClass="form-horizontal form-bordered" id="form">
+                                        <h:commandButton action="#{indexController.monitoraProduto}" value="Processar Eventos" styleClass="btn pl_start btn-success" />
+                                        <h:commandButton action="#{pedidoMB.stopEvent}" value="Desligar Captura" rendered="false" />
+                                        <p:poll interval="1" listener="#{indexController.monitoraProduto}" update="public" oncomplete="scrolling();" />  
+
+                                        <h:panelGroup layout="block" id="messages" class="listaMonitor">
+
+                                            <p:outputPanel id="public" layout="block" style="height: 400px; padding: 10px; margin: 20px; overflow-y: auto" styleClass="display ui-corner-all ui-widget-content chatlogs"> 
+                                                <h:outputText id="mensagem" escape="false" value="#{indexController.monitorProduto}"/>
+                                            </p:outputPanel>
+                                        </h:panelGroup>
+                                    </h:form>
+
+                                    <script type="text/javascript">
+                                        function scrolling(){
+                                             
+                                             
+                                             var height = $(PrimeFaces.escapeClientId('form:public'))[0].scrollHeight;
+                                             $(PrimeFaces.escapeClientId('form:public')).scrollTop(height);
+                                        }
+                                    </script>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </ui:define>
+</ui:composition>
+

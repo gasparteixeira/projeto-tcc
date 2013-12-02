@@ -35,6 +35,12 @@
 		<pattern value="/homepage" />
 		<view-id value="/faces/sistema/home.xhtml" />
 	</url-mapping>
+        
+	<url-mapping id="monitora">
+		<pattern value="/monitor-produto" />
+		<view-id value="/faces/sistema/monitor.xhtml" />
+	</url-mapping>
+        
 	<url-mapping id="usuario">
 		<pattern value="/usuarioList" />
 		<view-id value="/faces/sistema/backend/usuario/List.xhtml" />

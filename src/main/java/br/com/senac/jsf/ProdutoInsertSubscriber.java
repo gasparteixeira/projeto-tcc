@@ -6,6 +6,8 @@ package br.com.senac.jsf;
 
 import br.com.senac.entity.Produto;
 import br.com.senac.event.subscriber.StatementSubscriber;
+import java.util.ArrayList;
+import java.util.List;
 
 import java.util.Map;
 import org.springframework.stereotype.Component;
@@ -16,7 +18,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ProdutoInsertSubscriber implements StatementSubscriber {
-    
+    public static List<Produto> listProdutosSugeridos = new ArrayList<Produto>();
     @Override
     public String getStatement() {    
         String query = "insert into ProdutoStream select * from Produto.std:lastevent() as a";
@@ -24,7 +26,9 @@ public class ProdutoInsertSubscriber implements StatementSubscriber {
     }
     
     public void update(Map<String, Produto> eventMap) {
-
+        Produto p = eventMap.get("a");
+        listProdutosSugeridos.add(p);
+        IndexController.maisVistos = listProdutosSugeridos;
     }
     
     

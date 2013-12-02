@@ -1254,3 +1254,7 @@ footer span { padding-right: 60px }
 .formapagamentotable table { width: 290px}
 .formapagamentotable table label { float: left; margin-left:  10px;}
 .formapagamentotable table input { float: left}
+.total { float: right; font-weight: bold ; margin-right: 20px;}
+.total .valorCarro { font-size: 18px}
+.listaMonitor  .normal{display: block; color:#666;}
+.listaMonitor .especial { display: block; color: orangered; font-weight: bold}
